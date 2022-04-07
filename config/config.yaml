@@ -1,0 +1,47 @@
+module:
+  package: "crud"
+  author: "Chasing1020"
+  email: "chasing1020@gmail.com"
+  mysql:
+    dsn: "root:123456@tcp(127.0.0.1:3306)/test?charset=utf8mb4&parseTime=True&loc=Local"
+    max_idle_conn: 10
+    max_open_conn: 20
+    conn_max_idle_time: 2s
+    conn_max_life_time: 2s
+
+  redis:
+    addr: "localhost:6379"
+    password: ""
+    db: 0
+    max_retries: 3
+    read_timeout: 1s
+    write_timeout: 1s
+
+schema:
+  tables:
+    - name: "user"
+      columns:
+        - name: "name"
+          type: "string"
+        - name: "password"
+          type: "string"
+        - name: "grade"
+          type: "string"
+
+    - name: "book"
+      columns:
+        - name: "name"
+          type: "string"
+        - name: "author"
+          type: "string"
+        - name: "price"
+          type: "int"
+        - name: "isbn"
+          type: "string"
+
+    - name: "teacher"
+      columns:
+        - name: "name"
+          type: "string"
+        - name: "department"
+          type: "string"
