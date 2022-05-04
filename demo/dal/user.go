@@ -30,7 +30,7 @@ func GetUsers(ctx context.Context, ids []string, limit int, offset int) ([]model
 
 	err := conn.Find(&users, ids).Error
 	if err != nil {
-		log.Fatal("func `GetUsers` failed: ", err)
+		log.Println("func `GetUsers` failed: ", err)
 		return nil, err
 	}
 	return users, nil
@@ -42,7 +42,7 @@ func CreateUser(ctx context.Context, user *model.User) error {
 	user.UpdateTime = time.Now()
 	err := conn.Create(&user).Error
 	if err != nil {
-		log.Println("func `MCreateUser` failed: ", err)
+		log.Println("func `CreateUser` failed: ", err)
 		return err
 	}
 	return nil

@@ -6,12 +6,11 @@ File: model.go
 
 package model
 
-var HeadTemplate = `/*
-Copyright © 2022 {{.Author}} <{{.Email}}>
-Time: {{.Time}}
-File: response.go
-*/
+var HeadTemplate = `// Copyright © 2022 {{.Author}} <{{.Email}}>
+// Time: {{.Time.Format "2006-01-02T15:04:05Z07:00" }}
+// File: response.go
 
+// Package model provide the data structure of all models
 package model
 
 import "time"
@@ -19,12 +18,13 @@ import "time"
 
 var StructTemplate = `
 type {{.Name}} struct {
-	ID         int `+"`"+`json:"id,omitempty" gorm:"primaryKey;autoIncrement" form:"id"`+"`"+` {{range .Columns}}
+	ID         int `+"`"+`json:"id,omitempty" gorm:"primaryKey;autoIncrement" form:"id" swaggerignore:"true"`+"`"+` {{range .Columns}}
 	{{.Name}}  {{.Type}} `+"`"+`json:"{{.Tag}},omitempty" form:"{{.Tag}}"`+"`"+`{{end}}    
-	CreateTime time.Time `+"`"+`json:"createTime,omitempty"`+"`"+`
-	UpdateTime time.Time `+"`"+`json:"updateTime,omitempty"`+"`"+`
+	CreateTime time.Time `+"`"+`json:"createTime,omitempty" swaggerignore:"true"`+"`"+`
+	UpdateTime time.Time `+"`"+`json:"updateTime,omitempty" swaggerignore:"true"`+"`"+` 
 }
 
+// TableName will use the name of the table for gorm
 func ({{.Name}}) TableName() string {
 	return "{{.Tag}}"
 }

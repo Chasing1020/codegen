@@ -1,5 +1,5 @@
 mysql:
-  dsn: "root:123456@tcp(127.0.0.1:3306)/test?charset=utf8mb4&parseTime=True&loc=Local"
+  dsn: "root:zjc942378@tcp(127.0.0.1:3306)/test?charset=utf8mb4&parseTime=True&loc=Local"
   max_idle_conn: 10
   max_open_conn: 20
   conn_max_idle_time: 2s

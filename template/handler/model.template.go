@@ -9,10 +9,11 @@ package handler
 var HeadTemplate = `
 /*
 Copyright © 2022 {{.Author}} <{{.Email}}>
-Time: {{.Time}}
+Time: {{.Time.Format "2006-01-02T15:04:05Z07:00" }}
 File: handler.go
 */
 
+// Package handler registers handler functions
 package handler
 
 import (
@@ -24,14 +25,17 @@ import (
 `
 
 var MethodsTemplate = `
-// Post{{.Name}}Handler
-// @Description Create {{.Name}}
-// @Accept application/json
-// @Accept application/x-www-form-urlencoded
-// @Success 200 object model.Resp success
-// @Failure 400 object model.Resp failed
-// @Router /{{.Tag}}/ [post]
-// curl --location --request POST 'localhost:8080/{{.Tag}}'{{range .Columns}} --form '{{.Name}}'=''{{end}}
+// Post{{.Name}}Handler godoc
+// @Summary      Insert {{.Name}}
+// @Description  Insert {{.Name}}:
+// @Description  curl --location --request POST 'localhost:8080/{{.Tag}}/insert'{{range .Columns}} --form '{{.Tag}}'=''{{end}}
+// @Accept       application/json
+// @Accept       application/x-www-form-urlencoded
+// @Produce      json
+// @Param        {{.Tag}}  body    model.{{.Name}} true "{{.Name}}"
+// @Success      200       object  model.Resp  success
+// @Failure      400       object  model.Resp  failed
+// @Router       /{{.Tag}}/insert [post]
 func Post{{.Name}}Handler(c *gin.Context) {
 	var {{.Tag}} model.{{.Name}}
 	err := c.ShouldBind(&{{.Tag}})
@@ -48,14 +52,19 @@ func Post{{.Name}}Handler(c *gin.Context) {
 	c.JSON(200, model.Resp{Code: 200, Message: "success", Data: nil})
 }
 
-// Get{{.Name}}Handler
-// @Description Query {{.Name}}
-// @Accept application/json
-// @Accept application/x-www-form-urlencoded
-// @Success 200 object model.Resp success
-// @Failure 400 object model.Resp failed
-// @Router /{{.Tag}}/ [get]
-// curl --location --request GET 'localhost:8080/{{.Tag}}?ids=1&ids=2&ids=3&limit=3&offset=1'
+// Get{{.Name}}Handler godoc
+// @Summary      Query {{.Name}}
+// @Description  Query {{.Name}}:
+// @Description  curl --location --request GET 'localhost:8080/{{.Tag}}/query?ids=1&ids=2&ids=3&limit=3&offset=1'
+// @Accept       application/json
+// @Accept       application/x-www-form-urlencoded
+// @Produce      json
+// @Param        ids     query   int         true   "id list"
+// @Param        limit   query   int         false  "limit"   default(0)
+// @Param        offset  query   int         false  "offset"  default(0)
+// @Success      200       object  model.Resp  success
+// @Failure      400       object  model.Resp  failed
+// @Router       /{{.Tag}}/query [get]
 func Get{{.Name}}Handler(c *gin.Context) {
 	ids, ok := c.GetQueryArray("ids")
 	if !ok {
@@ -82,14 +91,17 @@ func Get{{.Name}}Handler(c *gin.Context) {
 	c.JSON(200, model.Resp{Code: 200, Message: "success", Data: {{.Tag}}s})
 }
 
-// Put{{.Name}}Handler
-// @Description Update {{.Name}}
-// @Accept application/json
-// @Accept application/x-www-form-urlencoded
-// @Success 200 object model.Resp success
-// @Failure 400 object model.Resp failed
-// @Router /{{.Tag}}/ [put]
-// curl --location --request PUT 'localhost:8080/{{.Tag}}' --form 'id='''{{range .Columns}} --form '{{.Name}}'=''{{end}}
+// Put{{.Name}}Handler godoc
+// @Summary      Update {{.Name}}
+// @Description  Update {{.Name}}:
+// @Description  curl --location --request PUT 'localhost:8080/{{.Tag}}' --form 'id'=''{{range .Columns}} --form '{{.Tag}}'=''{{end}}
+// @Accept       application/json
+// @Accept       application/x-www-form-urlencoded
+// @Produce      json
+// @Param        {{.Tag}}  body    model.{{.Name}} true "{{.Name}}"
+// @Success      200       object  model.Resp  success
+// @Failure      400       object  model.Resp  failed
+// @Router       /{{.Tag}}/update [put]
 func Put{{.Name}}Handler(c *gin.Context) {
 	var {{.Tag}} *model.{{.Name}}
 	err := c.ShouldBind(&{{.Tag}})
@@ -106,14 +118,18 @@ func Put{{.Name}}Handler(c *gin.Context) {
 	c.JSON(200, model.Resp{Code: 200, Message: "success", Data: {{.Tag}}})
 }
 
-// Delete{{.Name}}Handler
-// @Description Delete {{.Name}}
-// @Accept application/json
-// @Accept application/x-www-form-urlencoded
+// Delete{{.Name}}Handler godoc
+// @Summary      Delete {{.Name}}
+// @Description  Delete {{.Name}}
+// @Description  curl --location --request DELETE 'localhost:8080/{{.Tag}}/delete?ids=1&ids=2'
+// @Accept       application/json
+// @Accept       application/x-www-form-urlencoded
+// @Produce      json
+// @Param        ids       query   int         true   "id list"
+// @Success      200       object  model.Resp  success
 // @Success 200 object model.Resp success
-// @Failure 400 object model.Resp success
+// @Failure 400 object model.Resp failed
 // @Router /{{.Tag}}/delete [delete]
-// curl --location --request DELETE 'localhost:8080/{{.Tag}}?ids=1&ids=2'
 func Delete{{.Name}}Handler(c *gin.Context) {
 	ids, ok := c.GetQueryArray("ids")
 	if !ok {

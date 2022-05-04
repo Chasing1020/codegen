@@ -1,12 +1,10 @@
 package dal
 
-var InitTemplate = `
-/*
-Copyright © 2022 zjc <chasing1020@gmail.com>
-Time: 2022/4/7-11:18
-File: init.go
-*/
+var InitTemplate = `// Copyright © 2022 zjc <chasing1020@gmail.com>
+// Time: {{.Time.Format "2006-01-02T15:04:05Z07:00" }}
+// File: init.go
 
+// Package dal represents as Data access layer
 package dal
 
 import (

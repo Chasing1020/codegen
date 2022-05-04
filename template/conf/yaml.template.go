@@ -26,8 +26,7 @@ type RedisConf struct {
 }
 
 
-var YamlTemplate = `
-mysql:
+var YamlTemplate = `mysql:
   dsn: {{.MySQL.DSN}}
   max_idle_conn: {{.MySQL.MaxIdleConn}}
   max_open_conn: {{.MySQL.MaxOpenConn}}

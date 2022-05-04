@@ -21,9 +21,10 @@ func Start() {
 	modTidy()
 }
 
+var PathList = []string{"/dist/", "/dist/conf", "/dist/dal", "/dist/handler", "/dist/model", "/dist/router"}
+
 func createDir() {
-	pathList := []string{"/dist/", "/dist/conf", "/dist/dal", "/dist/handler", "/dist/model", "/dist/router"}
-	for _, path := range pathList {
+	for _, path := range PathList {
 		err := createDirIfNotExists(config.ProjectPath() + path)
 		if err != nil {
 			panic(err)
@@ -63,11 +64,22 @@ func modTidy() {
 	if err != nil {
 		panic(err)
 	}
-	cmd := exec.Command("go", "mod", "tidy")
-	err = cmd.Run()
+	err = exec.Command("go", "mod", "tidy").Run()
 	if err != nil {
 		panic(err)
 	}
 	log.Println("go mod tidy finished")
+
+	for _, path := range []string{"conf", "dal", "handler", "model", "router"} {
+		err = exec.Command("go", "fmt", "./"+path).Run()
+		if err != nil {
+			panic(err)
+		}
+	}
+	log.Println("go source code format finished")
+
+	log.Println("===== Codegen Success! =====")
+
 	log.Println("use command `cd dist && go run main.go` to start")
+	log.Println("use command `swag fmt && swag init` to generate documentation")
 }

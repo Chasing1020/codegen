@@ -14,12 +14,12 @@ import (
 )
 
 // PostUserHandler
-// @Description Create User
-// @Accept application/json
-// @Accept application/x-www-form-urlencoded
-// @Success 200 object model.Resp success
-// @Failure 400 object model.Resp failed
-// @Router /user/ [post]
+// @Description  Create User
+// @Accept       application/json
+// @Accept       application/x-www-form-urlencoded
+// @Success      200  object  model.Resp  success
+// @Failure      400  object  model.Resp  failed
+// @Router       /user/ [post]
 // curl --location --request POST 'localhost:8080/user' \
 // --form 'name=""' \
 // --form 'password=""'
@@ -41,12 +41,12 @@ func PostUserHandler(c *gin.Context) {
 }
 
 // GetUserHandler
-// @Description Query User
-// @Accept application/json
-// @Accept application/x-www-form-urlencoded
-// @Success 200 object model.Resp success
-// @Failure 400 object model.Resp failed
-// @Router /user/ [get]
+// @Description  Query User
+// @Accept       application/json
+// @Accept       application/x-www-form-urlencoded
+// @Success      200  object  model.Resp  success
+// @Failure      400  object  model.Resp  failed
+// @Router       /user/ [get]
 // curl --location --request GET 'localhost:8080/user?ids=1&ids=2'
 func GetUserHandler(c *gin.Context) {
 	ids, ok := c.GetQueryArray("ids")
@@ -76,12 +76,12 @@ func GetUserHandler(c *gin.Context) {
 }
 
 // PutUserHandler
-// @Description Update User
-// @Accept application/json
-// @Accept application/x-www-form-urlencoded
-// @Success 200 object model.Resp success
-// @Failure 400 object model.Resp failed
-// @Router /user/ [put]
+// @Description  Update User
+// @Accept       application/json
+// @Accept       application/x-www-form-urlencoded
+// @Success      200  object  model.Resp  success
+// @Failure      400  object  model.Resp  failed
+// @Router       /user/ [put]
 // curl --location --request PUT 'localhost:8080/user' \
 // --form 'id=""' \
 // --form 'name=""' \
@@ -104,12 +104,12 @@ func PutUserHandler(c *gin.Context) {
 }
 
 // DeleteUserHandler
-// @Description Delete User
-// @Accept application/json
-// @Accept application/x-www-form-urlencoded
-// @Success 200 object model.Resp success
-// @Failure 400 object model.Resp success
-// @Router /user/delete [delete]
+// @Description  Delete User
+// @Accept       application/json
+// @Accept       application/x-www-form-urlencoded
+// @Success      200  object  model.Resp  success
+// @Failure      400  object  model.Resp  success
+// @Router       /user/delete [delete]
 // curl --location --request DELETE 'localhost:8080/user?ids=1&ids=2'
 func DeleteUserHandler(c *gin.Context) {
 	ids, ok := c.GetQueryArray("ids")

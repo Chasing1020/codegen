@@ -6,12 +6,11 @@ File: conf_tpl.go
 
 package conf
 
-var Template = `/*
-Copyright © 2022 {{.Author}} <{{.Email}}>
-Time: {{.Time}}
-File: conf.go
-*/
+var Template = `// Copyright © 2022 {{.Author}} <{{.Email}}>
+// Time: {{ .Time.Format "2006-01-02T15:04:05Z07:00" }}
+// File: conf.go
 
+// Package conf will be used to unmarshal yaml
 package conf
 
 import (
@@ -61,6 +60,7 @@ func init() {
 
 var wd string
 
+// ProjectPath returns the path to the project
 func ProjectPath() string {
 	if wd != "" {
 		return wd
