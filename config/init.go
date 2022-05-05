@@ -10,7 +10,6 @@ import (
 	"gopkg.in/yaml.v2"
 	"os"
 	"path"
-	"strings"
 	"time"
 )
 
@@ -27,10 +26,12 @@ func init() {
 	Conf.Module.Time = time.Now()
 	for _, table := range Conf.Schema.Tables {
 		table.Name = ToUpperCamelCase(table.Name)
-		table.Tag = strings.ToLower(table.Name[:1]) + table.Name[1:]
+		table.LowerCamelCase =  ToLowerCamelCase(table.Name)
+		table.SnakeCase = ToSnakeCase(table.Name)
 		for _, column := range table.Columns {
 			column.Name = ToUpperCamelCase(column.Name)
-			column.Tag = ToSnakeCase(column.Name)
+			column.LowerCamelCase = ToLowerCamelCase(column.Name)
+			column.SnakeCase = ToSnakeCase(column.Name)
 		}
 	}
 }

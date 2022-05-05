@@ -24,7 +24,7 @@ import (
 var MethodsTemplate = `
 // Get{{.Name}}s will query {{.Name}} by ids, limit and offset
 func Get{{.Name}}s(ctx context.Context, ids []string, limit int, offset int) ([]model.{{.Name}}, error) {
-	var {{.Tag}}s []model.{{.Name}}
+	var {{.LowerCamelCase}}s []model.{{.Name}}
 	if len(ids) == 0 {
 		return nil, nil
 	}
@@ -38,18 +38,18 @@ func Get{{.Name}}s(ctx context.Context, ids []string, limit int, offset int) ([]
 		conn = conn.Offset(offset)
 	}
 
-	err := conn.Find(&{{.Tag}}s, ids).Error
+	err := conn.Find(&{{.LowerCamelCase}}s, ids).Error
 	if err != nil {
 		log.Println("func Get{{.Name}}s failed: ", err)
 		return nil, err
 	}
-	return {{.Tag}}s, nil
+	return {{.LowerCamelCase}}s, nil
 }
 
 // Create{{.Name}} will create a(n) {{.Name}} by *model.{{.Name}}
-func Create{{.Name}}(ctx context.Context, {{.Tag}} *model.{{.Name}}) error {
+func Create{{.Name}}(ctx context.Context, {{.LowerCamelCase}} *model.{{.Name}}) error {
 	conn := DB.WithContext(ctx)
-	err := conn.Create(&{{.Name}}).Error
+	err := conn.Create(&{{.LowerCamelCase}}).Error
 	if err != nil {
 		log.Println("func Create{{.Name}} failed: ", err)
 		return err
@@ -58,9 +58,9 @@ func Create{{.Name}}(ctx context.Context, {{.Tag}} *model.{{.Name}}) error {
 }
 
 // Update{{.Name}} will update a(n) {{.Name}} by *model.{{.Name}}.ID and set the value to *model.{{.Name}}
-func Update{{.Name}}(ctx context.Context, {{.Tag}} *model.{{.Name}}) error {
+func Update{{.Name}}(ctx context.Context, {{.LowerCamelCase}} *model.{{.Name}}) error {
 	conn := DB.WithContext(ctx)
-	err := conn.Where("id = ?", {{.Name}}.ID).Updates({{.Name}}).Error
+	err := conn.Where("id = ?", {{.LowerCamelCase}}.ID).Updates({{.LowerCamelCase}}).Error
 	if err != nil {
 		log.Println("func Update{{.Name}} failed: ", err)
 		return err
@@ -70,12 +70,12 @@ func Update{{.Name}}(ctx context.Context, {{.Tag}} *model.{{.Name}}) error {
 
 // Delete{{.Name}}s will delete all {{.Name}} by ids
 func Delete{{.Name}}s(ctx context.Context, ids []string) ([]model.{{.Name}}, error) {
-	var {{.Tag}}s []model.{{.Name}}
+	var {{.LowerCamelCase}}s []model.{{.Name}}
 	conn := DB.WithContext(ctx)
-	err := conn.Where("id IN ?", ids).Delete(&{{.Tag}}s).Error
+	err := conn.Where("id IN ?", ids).Delete(&{{.LowerCamelCase}}s).Error
 	if err != nil {
 		log.Println("func Delete{{.Name}}s failed: ", err)
 		return nil, err
 	}
-	return {{.Tag}}s, nil
+	return {{.LowerCamelCase}}s, nil
 }`

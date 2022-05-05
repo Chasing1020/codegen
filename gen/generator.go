@@ -38,7 +38,7 @@ func Conf() {
 func Dal() {
 	WriteHeadCode(path+"/dist/dal/init.go", dal.InitTemplate)
 	for _, table := range config.Conf.Tables {
-		WriteMethodsCode(path+"/dist/dal/"+config.ToSnakeCase(table.Tag)+".go",
+		WriteMethodsCode(path+"/dist/dal/"+config.ToSnakeCase(table.SnakeCase)+".go",
 			dal.HeadTemplate, dal.MethodsTemplate, table)
 	}
 	log.Println(path + "/dist/dal/ generated")
@@ -46,7 +46,7 @@ func Dal() {
 
 func Handler() {
 	for _, table := range config.Conf.Tables {
-		WriteMethodsCode(path+"/dist/handler/"+config.ToSnakeCase(table.Tag)+".go",
+		WriteMethodsCode(path+"/dist/handler/"+config.ToSnakeCase(table.SnakeCase)+".go",
 			handler.HeadTemplate, handler.MethodsTemplate, table)
 	}
 	log.Println(path + "/dist/handler/ generated")
@@ -55,13 +55,14 @@ func Handler() {
 func Model() {
 	WriteHeadCode(path+"/dist/model/response.go", model.ResponseTemplate)
 	for _, table := range config.Conf.Tables {
-		WriteMethodsCode(path+"/dist/model/"+config.ToSnakeCase(table.Tag)+".go",
+		WriteMethodsCode(path+"/dist/model/"+config.ToSnakeCase(table.SnakeCase)+".go",
 			model.HeadTemplate, model.StructTemplate, table)
 	}
 	log.Println(path + "/dist/model/ generated")
 }
 
 func Router() {
+	WriteHeadCode(path+"/dist/router/actuator.go", router.ActuatorHeadTemplate)
 	WriteRouterCode(path+"/dist/router/router.go", router.HeadTemplate, router.MethodsTemplate)
 	log.Println(path + "/dist/router/ generated")
 }

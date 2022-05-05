@@ -19,13 +19,13 @@ import "time"
 var StructTemplate = `
 type {{.Name}} struct {
 	ID         int `+"`"+`json:"id,omitempty" gorm:"primaryKey;autoIncrement" form:"id" swaggerignore:"true"`+"`"+` {{range .Columns}}
-	{{.Name}}  {{.Type}} `+"`"+`json:"{{.Tag}},omitempty" form:"{{.Tag}}"`+"`"+`{{end}}    
+	{{.Name}}  {{.Type}} `+"`"+`json:"{{.SnakeCase}},omitempty" form:"{{.SnakeCase}}"`+"`"+`{{end}}    
 	CreatedAt time.Time `+"`"+`json:"create_at,omitempty" swaggerignore:"true"`+"`"+`
 	UpdatedAt time.Time `+"`"+`json:"update_at,omitempty" swaggerignore:"true"`+"`"+` 
 }
 
 // TableName will use the name of the table for gorm
 func ({{.Name}}) TableName() string {
-	return "{{.SnakeCamel}}"
+	return "{{.SnakeCase}}"
 }
 `

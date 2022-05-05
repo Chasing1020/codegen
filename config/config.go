@@ -29,39 +29,17 @@ type Schema struct {
 }
 
 type Table struct {
-	Name    string    `yaml:"name"`
-	Tag     string    `yaml:"Tag"`
-	Columns []*Column `yaml:"columns"`
-}
-
-func (t *Table) UpperCamel() string {
-	return ToUpperCamelCase(t.Name)
-}
-
-func (t *Table) LowerCamel() string {
-	return ToLowerCamelCase(t.Name)
-}
-
-func (t *Table) SnakeCamel() string {
-	return ToSnakeCase(t.Name)
+	Name           string    `yaml:"name"` // exp: CourseOutline
+	LowerCamelCase string    // exp: courseOutline
+	SnakeCase      string    // exp: course_outline
+	Columns        []*Column `yaml:"columns"`
 }
 
 type Column struct {
-	Name string `yaml:"name"`
-	Type string `yaml:"type"`
-	Tag  string `yaml:"tag"`
-}
-
-func (c *Column) UpperCamel() string {
-	return ToUpperCamelCase(c.Name)
-}
-
-func (c *Column) LowerCamel() string {
-	return ToLowerCamelCase(c.Name)
-}
-
-func (c *Column) SnakeCamel() string {
-	return ToSnakeCase(c.Name)
+	Name           string `yaml:"name"` // exp: CreatedAt
+	LowerCamelCase string  // exp: createdAt
+	SnakeCase      string  // exp: created_at
+	Type           string `yaml:"type"`
 }
 
 type MySQLConf struct {

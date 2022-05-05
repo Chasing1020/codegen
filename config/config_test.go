@@ -25,10 +25,10 @@ func TestToLower(t *testing.T) {
 	Conf.Module.Time = time.Now()
 	for _, table := range Conf.Schema.Tables {
 		table.Name = strings.Title(table.Name)
-		table.Tag = ToSnakeCase(table.Name)
+		//table.Tag = ToSnakeCase(table.Name)
 		for _, column := range table.Columns {
 			column.Name = ToUpperCamelCase(column.Name)
-			column.Tag = strings.ToLower(column.Name[:1]) + column.Name[1:]
+			//column.Tag = strings.ToLower(column.Name[:1]) + column.Name[1:]
 		}
 	}
 	fmt.Println(Conf)

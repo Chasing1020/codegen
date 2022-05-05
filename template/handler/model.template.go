@@ -25,23 +25,23 @@ var MethodsTemplate = `
 // Post{{.Name}}Handler godoc
 // @Summary      Insert {{.Name}}
 // @Description  Insert {{.Name}}:
-// @Description  curl --location --request POST 'localhost:8080/{{.Tag}}/insert'{{range .Columns}} --form '{{.Tag}}'=''{{end}}
+// @Description  curl --location --request POST 'localhost:8080/{{.SnakeCase}}/insert'{{range .Columns}} --form '{{.LowerCamelCase}}'=''{{end}}
 // @Accept       application/json
 // @Accept       application/x-www-form-urlencoded
 // @Produce      json
-// @Param        {{.Tag}}  body    model.{{.Name}} true "{{.Name}}"
+// @Param        {{.Name}}  body    model.{{.Name}} true "{{.Name}}"
 // @Success      200       object  model.Resp  success
 // @Failure      400       object  model.Resp  failed
-// @Router       /{{.Tag}}/insert [post]
+// @Router       /{{.SnakeCase}}/insert [post]
 func Post{{.Name}}Handler(c *gin.Context) {
-	var {{.Tag}} model.{{.Name}}
-	err := c.ShouldBind(&{{.Tag}})
+	var {{.LowerCamelCase}} model.{{.Name}}
+	err := c.ShouldBind(&{{.LowerCamelCase}})
 	if err != nil {
-		c.JSON(400, model.Resp{Code: 400, Message: "c.ShouldBind(&{{.Tag}}) failed:" + err.Error(), Data: nil})
+		c.JSON(400, model.Resp{Code: 400, Message: "c.ShouldBind(&{{.LowerCamelCase}}) failed:" + err.Error(), Data: nil})
 		return
 	}
 
-	err = dal.Create{{.Name}}(c, &{{.Tag}})
+	err = dal.Create{{.Name}}(c, &{{.LowerCamelCase}})
 	if err != nil {
 		c.JSON(400, model.Resp{Code: 400, Message: "del.Create{{.Name}} failed:" + err.Error(), Data: nil})
 		return
@@ -52,7 +52,7 @@ func Post{{.Name}}Handler(c *gin.Context) {
 // Get{{.Name}}Handler godoc
 // @Summary      Query {{.Name}}
 // @Description  Query {{.Name}}:
-// @Description  curl --location --request GET 'localhost:8080/{{.Tag}}/query?ids=1&ids=2&ids=3&limit=3&offset=1'
+// @Description  curl --location --request GET 'localhost:8080/{{.SnakeCase}}/query?ids=1&ids=2&ids=3&limit=3&offset=1'
 // @Accept       application/json
 // @Accept       application/x-www-form-urlencoded
 // @Produce      json
@@ -61,7 +61,7 @@ func Post{{.Name}}Handler(c *gin.Context) {
 // @Param        offset  query   int         false  "offset"  default(0)
 // @Success      200       object  model.Resp  success
 // @Failure      400       object  model.Resp  failed
-// @Router       /{{.Tag}}/query [get]
+// @Router       /{{.SnakeCase}}/query [get]
 func Get{{.Name}}Handler(c *gin.Context) {
 	ids, ok := c.GetQueryArray("ids")
 	if !ok {
@@ -79,50 +79,50 @@ func Get{{.Name}}Handler(c *gin.Context) {
 		return
 	}
 
-	{{.Tag}}s, err := dal.Get{{.Name}}s(c, ids, limit, offset)
+	{{.LowerCamelCase}}s, err := dal.Get{{.Name}}s(c, ids, limit, offset)
 
 	if err != nil {
 		c.JSON(404, model.Resp{Code: 400, Message: "not found: " + err.Error(), Data: nil})
 		return
 	}
-	c.JSON(200, model.Resp{Code: 200, Message: "success", Data: {{.Tag}}s})
+	c.JSON(200, model.Resp{Code: 200, Message: "success", Data: {{.LowerCamelCase}}s})
 }
 
 // Put{{.Name}}Handler godoc
 // @Summary      Update {{.Name}}
 // @Description  Update {{.Name}}:
-// @Description  curl --location --request PUT 'localhost:8080/{{.Tag}}' --form 'id'=''{{range .Columns}} --form '{{.Tag}}'=''{{end}}
+// @Description  curl --location --request PUT 'localhost:8080/{{.SnakeCase}}/update' --form 'id'=''{{range .Columns}} --form '{{.LowerCamelCase}}'=''{{end}}
 // @Accept       application/json
 // @Accept       application/x-www-form-urlencoded
 // @Produce      json
-// @Param        {{.Tag}}  body    model.{{.Name}} true "{{.Name}}"
+// @Param        {{.Name}}  body    model.{{.Name}} true "{{.Name}}"
 // @Success      200       object  model.Resp  success
 // @Failure      400       object  model.Resp  failed
-// @Router       /{{.Tag}}/update [put]
+// @Router       /{{.SnakeCase}}/update [put]
 func Put{{.Name}}Handler(c *gin.Context) {
-	var {{.Tag}} *model.{{.Name}}
-	err := c.ShouldBind(&{{.Tag}})
+	var {{.LowerCamelCase}} *model.{{.Name}}
+	err := c.ShouldBind(&{{.LowerCamelCase}})
 	if err != nil {
-		c.JSON(400, model.Resp{Code: 400, Message: "c.ShouldBind(&{{.Tag}}) failed:" + err.Error(), Data: nil})
+		c.JSON(400, model.Resp{Code: 400, Message: "c.ShouldBind(&{{.LowerCamelCase}}) failed:" + err.Error(), Data: nil})
 		return
 	}
-	if {{.Tag}}.ID == 0 {
+	if {{.LowerCamelCase}}.ID == 0 {
 		c.JSON(400, model.Resp{Code: 400, Message: "parameter 'id' required", Data: nil})
 		return
 	}
 
-	err = dal.Update{{.Name}}(c, {{.Tag}})
+	err = dal.Update{{.Name}}(c, {{.LowerCamelCase}})
 	if err != nil {
-		c.JSON(400, model.Resp{Code: 400, Message: "dal.Update{{.Name}}(c, {{.Tag}}) failed:" + err.Error(), Data: nil})
+		c.JSON(400, model.Resp{Code: 400, Message: "dal.Update{{.Name}}(c, {{.LowerCamelCase}}) failed:" + err.Error(), Data: nil})
 		return
 	}
-	c.JSON(200, model.Resp{Code: 200, Message: "success", Data: {{.Tag}}})
+	c.JSON(200, model.Resp{Code: 200, Message: "success", Data: {{.LowerCamelCase}}})
 }
 
 // Delete{{.Name}}Handler godoc
 // @Summary      Delete {{.Name}}
 // @Description  Delete {{.Name}}
-// @Description  curl --location --request DELETE 'localhost:8080/{{.Tag}}/delete?ids=1&ids=2'
+// @Description  curl --location --request DELETE 'localhost:8080/{{.SnakeCase}}/delete?ids=1&ids=2'
 // @Accept       application/json
 // @Accept       application/x-www-form-urlencoded
 // @Produce      json
@@ -130,7 +130,7 @@ func Put{{.Name}}Handler(c *gin.Context) {
 // @Success      200       object  model.Resp  success
 // @Success 200 object model.Resp success
 // @Failure 400 object model.Resp failed
-// @Router /{{.Tag}}/delete [delete]
+// @Router /{{.SnakeCase}}/delete [delete]
 func Delete{{.Name}}Handler(c *gin.Context) {
 	ids, ok := c.GetQueryArray("ids")
 	if !ok {
@@ -142,7 +142,7 @@ func Delete{{.Name}}Handler(c *gin.Context) {
 		return
 	}
 
-	{{.Tag}}s, err := dal.Delete{{.Name}}s(c, ids)
+	{{.LowerCamelCase}}s, err := dal.Delete{{.Name}}s(c, ids)
 
 	if err != nil {
 		c.JSON(400, model.Resp{
@@ -152,6 +152,6 @@ func Delete{{.Name}}Handler(c *gin.Context) {
 		})
 		return
 	}
-	c.JSON(200, model.Resp{Code: 200, Message: "success", Data: {{.Tag}}s})
+	c.JSON(200, model.Resp{Code: 200, Message: "success", Data: {{.LowerCamelCase}}s})
 }
 `
