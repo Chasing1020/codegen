@@ -13,11 +13,14 @@ var Template = `// Copyright © 2022 {{.Author}} <{{.Email}}>
 package auth
 
 import (
-	"crud/conf"
+	"{{.Package}}/conf"
+	"{{.Package}}/dal"
+	"{{.Package}}/model"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-contrib/sessions/redis"
 	"github.com/gin-gonic/gin"
+	"strings"
 )
 
 var Session gin.HandlerFunc
