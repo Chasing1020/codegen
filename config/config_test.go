@@ -27,8 +27,8 @@ func TestToLower(t *testing.T) {
 		table.Name = strings.Title(table.Name)
 		table.Tag = ToSnakeCase(table.Name)
 		for _, column := range table.Columns {
-			column.Name = strings.Title(column.Name)
-			column.Tag = ToSnakeCase(column.Name)
+			column.Name = ToUpperCamelCase(column.Name)
+			column.Tag = strings.ToLower(column.Name[:1]) + column.Name[1:]
 		}
 	}
 	fmt.Println(Conf)

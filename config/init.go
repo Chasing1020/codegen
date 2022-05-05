@@ -26,10 +26,10 @@ func init() {
 
 	Conf.Module.Time = time.Now()
 	for _, table := range Conf.Schema.Tables {
-		table.Name = strings.Title(table.Name)
-		table.Tag = ToSnakeCase(table.Name)
+		table.Name = ToUpperCamelCase(table.Name)
+		table.Tag = strings.ToLower(table.Name[:1]) + table.Name[1:]
 		for _, column := range table.Columns {
-			column.Name = strings.Title(column.Name)
+			column.Name = ToUpperCamelCase(column.Name)
 			column.Tag = ToSnakeCase(column.Name)
 		}
 	}

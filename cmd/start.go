@@ -21,7 +21,7 @@ func Start() {
 	modTidy()
 }
 
-var PathList = []string{"/dist/", "/dist/conf", "/dist/dal", "/dist/handler", "/dist/model", "/dist/router"}
+var PathList = []string{"/dist/", "/dist/auth", "/dist/conf", "/dist/dal", "/dist/handler", "/dist/model", "/dist/router"}
 
 func createDir() {
 	for _, path := range PathList {
@@ -43,8 +43,8 @@ func createDirIfNotExists(path string) error {
 
 func genCode() {
 	var wg sync.WaitGroup
+	wg.Add(len(gen.Functions))
 	for _, f := range gen.Functions {
-		wg.Add(1)
 		go func(f func()) {
 			defer func() {
 				wg.Done()
@@ -70,7 +70,7 @@ func modTidy() {
 	}
 	log.Println("go mod tidy finished")
 
-	for _, path := range []string{"conf", "dal", "handler", "model", "router"} {
+	for _, path := range []string{"conf", "auth", "dal", "handler", "model", "router"} {
 		err = exec.Command("go", "fmt", "./"+path).Run()
 		if err != nil {
 			panic(err)
@@ -81,5 +81,7 @@ func modTidy() {
 	log.Println("===== Codegen Success! =====")
 
 	log.Println("use command `cd dist && go run main.go` to start")
+	log.Println("use `go get -u github.com/swaggo/swag/cmd/swag`")
+	log.Println("(1.16 or newer)`go install github.com/swaggo/swag/cmd/swag@latest`")
 	log.Println("use command `swag fmt && swag init` to generate documentation")
 }

@@ -17,7 +17,6 @@ import (
 	"{{.Package}}/model"
 	"context"
 	"log"
-	"time"
 )
 `
 
@@ -48,10 +47,8 @@ func Get{{.Name}}s(ctx context.Context, ids []string, limit int, offset int) ([]
 }
 
 // Create{{.Name}} will create a(n) {{.Name}} by *model.{{.Name}}
-func Create{{.Name}}(ctx context.Context, {{.Name}} *model.{{.Name}}) error {
+func Create{{.Name}}(ctx context.Context, {{.Tag}} *model.{{.Name}}) error {
 	conn := DB.WithContext(ctx)
-	{{.Name}}.CreateTime = time.Now()
-	{{.Name}}.UpdateTime = time.Now()
 	err := conn.Create(&{{.Name}}).Error
 	if err != nil {
 		log.Println("func Create{{.Name}} failed: ", err)
@@ -61,9 +58,8 @@ func Create{{.Name}}(ctx context.Context, {{.Name}} *model.{{.Name}}) error {
 }
 
 // Update{{.Name}} will update a(n) {{.Name}} by *model.{{.Name}}.ID and set the value to *model.{{.Name}}
-func Update{{.Name}}(ctx context.Context, {{.Name}} *model.{{.Name}}) error {
+func Update{{.Name}}(ctx context.Context, {{.Tag}} *model.{{.Name}}) error {
 	conn := DB.WithContext(ctx)
-	{{.Name}}.UpdateTime = time.Now()
 	err := conn.Where("id = ?", {{.Name}}.ID).Updates({{.Name}}).Error
 	if err != nil {
 		log.Println("func Update{{.Name}} failed: ", err)

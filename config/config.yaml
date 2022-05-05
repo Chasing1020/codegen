@@ -19,29 +19,69 @@ module:
 
 schema:
   tables:
-    - name: "user"
+    - name: "course"
       columns:
+        - name: "course_id"
+          type: "string"
         - name: "name"
+          type: "string"
+        - name: "credit"
+          type: "int"
+        - name: "time"
+          type: "int"
+        - name: "department_id"
+          type: "string"
+
+    - name: "course_outline"
+      columns:
+        - name: "term"
+          type: "string"
+        - name: "course_id"
+          type: "string"
+        - name: "teacher_id"
+          type: "string"
+        - name: "class_schedule"
+          type: "string"
+
+    - name: "department"
+      columns:
+        - name: "department_id"
+          type: "string"
+        - name: "name"
+          type: "string"
+        - name: "address"
+          type: "string"
+        - name: "phone"
+          type: "string"
+
+    - name: "elective"
+      columns:
+        - name: "student_id"
+          type: "string"
+        - name: "term"
+          type: "string"
+        - name: "course_id"
+          type: "string"
+        - name: "teacher_id"
+          type: "string"
+        - name: "score"
+          type: "string"
+
+    - name: "student"
+      columns:
+        - name: "student_id"
           type: "string"
         - name: "password"
           type: "string"
-        - name: "grade"
-          type: "string"
-
-    - name: "book"
-      columns:
         - name: "name"
           type: "string"
-        - name: "author"
+        - name: "sex"
           type: "string"
-        - name: "price"
-          type: "int"
-        - name: "isbn"
+        - name: "birthday"
+          type: "*time.Time"
+        - name: "hometown"
           type: "string"
-
-    - name: "teacher"
-      columns:
-        - name: "name"
+        - name: "phone"
           type: "string"
-        - name: "department"
+        - name: "department_id"
           type: "string"

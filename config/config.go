@@ -34,10 +34,34 @@ type Table struct {
 	Columns []*Column `yaml:"columns"`
 }
 
+func (t *Table) UpperCamel() string {
+	return ToUpperCamelCase(t.Name)
+}
+
+func (t *Table) LowerCamel() string {
+	return ToLowerCamelCase(t.Name)
+}
+
+func (t *Table) SnakeCamel() string {
+	return ToSnakeCase(t.Name)
+}
+
 type Column struct {
 	Name string `yaml:"name"`
 	Type string `yaml:"type"`
 	Tag  string `yaml:"tag"`
+}
+
+func (c *Column) UpperCamel() string {
+	return ToUpperCamelCase(c.Name)
+}
+
+func (c *Column) LowerCamel() string {
+	return ToLowerCamelCase(c.Name)
+}
+
+func (c *Column) SnakeCamel() string {
+	return ToSnakeCase(c.Name)
 }
 
 type MySQLConf struct {

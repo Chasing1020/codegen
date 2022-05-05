@@ -16,11 +16,11 @@ package router
 import (
 	"{{.Package}}/dal"
 	"{{.Package}}/model"
-	// _ "{{.Package}}/docs"
+	_ "{{.Package}}/docs"
 	"{{.Package}}/handler"
 	"github.com/gin-gonic/gin"
-	// swaggerFiles "github.com/swaggo/files"
-	// ginSwagger "github.com/swaggo/gin-swagger"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 `
 var MethodsTemplate = `
@@ -40,10 +40,9 @@ func InitEngine() *gin.Engine {
 	e.GET("/ping", func(c *gin.Context) { c.String(200, dal.RDB.Ping(c).Val()) })
 
 
-	// if you want to use Swagger, please use <swag init> command in the root directory
-	// and uncomment the import
+	// If you want to use Swagger, please use <swag fmt && swag init> command in the root directory
 	// See "http://localhost:8080/swagger/index.html" for more information
-	// e.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	e.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	{{range .Tables}}
 	{{.Tag}} := e.Group("/{{.Tag}}")

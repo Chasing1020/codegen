@@ -6,12 +6,9 @@ File: model.go
 
 package handler
 
-var HeadTemplate = `
-/*
-Copyright © 2022 {{.Author}} <{{.Email}}>
-Time: {{.Time.Format "2006-01-02T15:04:05Z07:00" }}
-File: handler.go
-*/
+var HeadTemplate = `// Copyright © 2022 {{.Author}} <{{.Email}}>
+// Time: {{.Time.Format "2006-01-02T15:04:05Z07:00" }}
+// File: handler.go
 
 // Package handler registers handler functions
 package handler
@@ -107,6 +104,10 @@ func Put{{.Name}}Handler(c *gin.Context) {
 	err := c.ShouldBind(&{{.Tag}})
 	if err != nil {
 		c.JSON(400, model.Resp{Code: 400, Message: "c.ShouldBind(&{{.Tag}}) failed:" + err.Error(), Data: nil})
+		return
+	}
+	if {{.Tag}}.ID == 0 {
+		c.JSON(400, model.Resp{Code: 400, Message: "parameter 'id' required", Data: nil})
 		return
 	}
 
