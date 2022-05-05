@@ -20,7 +20,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-
 var Session gin.HandlerFunc
 
 func init() {
@@ -36,5 +35,76 @@ func init() {
 		MaxAge: 60 * 60 * 24 * 7, // expire in a week
 	})
 	Session = sessions.Sessions("user_session", store)
+}
+
+func CookieRequired(c *gin.Context) {
+	session := sessions.Default(c)
+	user := session.Get("logged_in")
+	if user == nil {
+		c.AbortWithStatusJSON(401, gin.H{"error": "unauthorized"})
+		return
+	}
+	c.Next()
+}
+
+// Login godoc
+// @Summary      Login
+// @Description  Parses a form and checks for specific data
+// @Accept       application/json
+// @Accept       application/x-www-form-urlencoded
+// @Produce      json
+// @Param        username  body    string      false  "username"  default(0)
+// @Param        password  query   string      false  "password"  default(0)
+// @Success      200       object  model.Resp  success
+// @Failure      401       object  model.Resp  failed
+// @Failure      500       object  model.Resp  failed
+// @Router       /login [post]
+func Login(c *gin.Context) {
+	session := sessions.Default(c)
+	username := c.PostForm("username")
+	password := c.PostForm("password")
+
+	// Validate form input
+	if strings.Trim(username, " ") == "" || strings.Trim(password, " ") == "" {
+		c.JSON(403, gin.H{"error": "Parameters can't be empty"})
+		return
+	}
+
+	var students model.Student
+	if dal.DB.Where("username = ? AND password = ?", username, password).Find(&students).RowsAffected == 0 {
+		c.JSON(401, gin.H{"error": "Authentication failed"})
+		return
+	}
+
+	// Save the username in the session
+	session.Set("logged_in", username) // In real world usage you'd set this to the users ID
+	if err := session.Save(); err != nil {
+		c.JSON(500, gin.H{"error": "Failed to save session"})
+		return
+	}
+	c.JSON(200, gin.H{"message": "Successfully authenticated user"})
+}
+
+// Logout godoc
+// @Summary      Logout
+// @Description  Logout and delete the session
+// @Produce      json
+// @Success      200  object  model.Resp  success
+// @Failure      401  object  model.Resp  failed
+// @Failure      500  object  model.Resp  failed
+// @Router       /logout [get]
+func Logout(c *gin.Context) {
+	session := sessions.Default(c)
+	user := session.Get("logged_in")
+	if user == nil {
+		c.JSON(401, gin.H{"error": "Invalid session token"})
+		return
+	}
+	session.Delete("logged_in")
+	if err := session.Save(); err != nil {
+		c.JSON(500, gin.H{"error": "Failed to save session"})
+		return
+	}
+	c.JSON(200, gin.H{"message": "Successfully logged out"})
 }
 `

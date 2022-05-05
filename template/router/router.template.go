@@ -16,6 +16,7 @@ package router
 import (
 	"{{.Package}}/dal"
 	"{{.Package}}/model"
+	"{{.Package}}/auth"
 	_ "{{.Package}}/docs"
 	"{{.Package}}/handler"
 	"github.com/gin-gonic/gin"

@@ -70,5 +70,6 @@ func Router() {
 func Main() {
 	WriteHeadCode(path+"/dist/main.go", template.MainTemplate)
 	WriteHeadCode(path+"/dist/go.mod", template.GoModTemplate)
+	WriteHeadCode(path+"/dist/Makefile", template.MakefileTemplate)
 	log.Println(path + "/dist/ generated")
 }

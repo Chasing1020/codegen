@@ -9,7 +9,7 @@ package cmd
 import (
 	"codegen/config"
 	"codegen/gen"
-	"log"
+	"fmt"
 	"os"
 	"os/exec"
 	"sync"
@@ -49,14 +49,14 @@ func genCode() {
 			defer func() {
 				wg.Done()
 				if info := recover(); info != nil {
-					log.Println(info)
+					fmt.Println(info)
 				}
 			}()
 			f()
 		}(f)
 	}
 	wg.Wait()
-	log.Println("code generation finished")
+	fmt.Println("code generation finished")
 }
 
 func modTidy() {
@@ -68,7 +68,7 @@ func modTidy() {
 	if err != nil {
 		panic(err)
 	}
-	log.Println("go mod tidy finished")
+	fmt.Println("go mod tidy finished")
 
 	for _, path := range []string{"conf", "auth", "dal", "handler", "model", "router"} {
 		err = exec.Command("go", "fmt", "./"+path).Run()
@@ -76,12 +76,12 @@ func modTidy() {
 			panic(err)
 		}
 	}
-	log.Println("go source code format finished")
+	fmt.Println("go source code format finished")
 
-	log.Println("===== Codegen Success! =====")
+	fmt.Println("===== Codegen Success! =====")
 
-	log.Println("use command `cd dist && go run main.go` to start")
-	log.Println("use `go get -u github.com/swaggo/swag/cmd/swag`")
-	log.Println("(1.16 or newer)`go install github.com/swaggo/swag/cmd/swag@latest`")
-	log.Println("use command `swag fmt && swag init` to generate documentation")
+	fmt.Println("use command `cd dist && go run main.go` to start")
+	fmt.Println("use `go get -u github.com/swaggo/swag/cmd/swag`")
+	fmt.Println("(1.16 or newer)`go install github.com/swaggo/swag/cmd/swag@latest`")
+	fmt.Println("use command `swag fmt && swag init` to generate documentation")
 }
