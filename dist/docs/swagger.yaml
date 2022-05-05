@@ -1,0 +1,787 @@
+basePath: /
+definitions:
+  model.Course:
+    properties:
+      course_id:
+        type: string
+      credit:
+        type: integer
+      department_id:
+        type: string
+      name:
+        type: string
+      time:
+        type: integer
+    type: object
+  model.CourseOutline:
+    properties:
+      class_schedule:
+        type: string
+      course_id:
+        type: string
+      teacher_id:
+        type: string
+      term:
+        type: string
+    type: object
+  model.Department:
+    properties:
+      address:
+        type: string
+      department_id:
+        type: string
+      name:
+        type: string
+      phone:
+        type: string
+    type: object
+  model.Elective:
+    properties:
+      course_id:
+        type: string
+      score:
+        type: string
+      student_id:
+        type: string
+      teacher_id:
+        type: string
+      term:
+        type: string
+    type: object
+  model.Resp:
+    properties:
+      code:
+        description: Code http.status_code
+        type: integer
+      data:
+        description: Response data
+      message:
+        description: Error or success message
+        type: string
+    type: object
+  model.Student:
+    properties:
+      birthday:
+        type: string
+      department_id:
+        type: string
+      hometown:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+      sex:
+        type: string
+      student_id:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: chasing1020@gmail.com
+    name: Chasing1020
+    url: https://github.com/Chasing1020
+  description: crud Project
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: crud
+  version: "1.0"
+paths:
+  /actuator/health:
+    get:
+      description: |-
+        Check http response health:
+        curl --location --request 'localhost:8080/actuator/health'
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: Check http response health
+  /actuator/health/mysql:
+    get:
+      description: |-
+        Check mysql health:
+        curl --location --request 'localhost:8080/actuator/health/mysql'
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: Check mysql health
+  /actuator/health/redis:
+    get:
+      description: |-
+        Check redis health:
+        curl --location --request 'localhost:8080/actuator/health/redis'
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: Check redis health
+  /actuator/health/session:
+    get:
+      description: |-
+        Check session health:
+        curl --location --request 'localhost:8080/actuator/health/session'
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: Check session health
+  /course/delete:
+    delete:
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      description: |-
+        Delete Course
+        curl --location --request DELETE 'localhost:8080/course/delete?ids=1&ids=2'
+      parameters:
+      - description: id list
+        in: query
+        name: ids
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Resp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Resp'
+      summary: Delete Course
+  /course/insert:
+    post:
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      description: |-
+        Insert Course:
+        curl --location --request POST 'localhost:8080/course/insert' --form 'courseId'='' --form 'name'='' --form 'credit'='' --form 'time'='' --form 'departmentId'=''
+      parameters:
+      - description: Course
+        in: body
+        name: Course
+        required: true
+        schema:
+          $ref: '#/definitions/model.Course'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Resp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Resp'
+      summary: Insert Course
+  /course/query:
+    get:
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      description: |-
+        Query Course:
+        curl --location --request GET 'localhost:8080/course/query?ids=1&ids=2&ids=3&limit=3&offset=1'
+      parameters:
+      - description: id list
+        in: query
+        name: ids
+        required: true
+        type: integer
+      - default: 0
+        description: limit
+        in: query
+        name: limit
+        type: integer
+      - default: 0
+        description: offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Resp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Resp'
+      summary: Query Course
+  /course/update:
+    put:
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      description: |-
+        Update Course:
+        curl --location --request PUT 'localhost:8080/course/update' --form 'id'='' --form 'courseId'='' --form 'name'='' --form 'credit'='' --form 'time'='' --form 'departmentId'=''
+      parameters:
+      - description: Course
+        in: body
+        name: Course
+        required: true
+        schema:
+          $ref: '#/definitions/model.Course'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Resp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Resp'
+      summary: Update Course
+  /course_outline/delete:
+    delete:
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      description: |-
+        Delete CourseOutline
+        curl --location --request DELETE 'localhost:8080/course_outline/delete?ids=1&ids=2'
+      parameters:
+      - description: id list
+        in: query
+        name: ids
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Resp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Resp'
+      summary: Delete CourseOutline
+  /course_outline/insert:
+    post:
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      description: |-
+        Insert CourseOutline:
+        curl --location --request POST 'localhost:8080/course_outline/insert' --form 'term'='' --form 'courseId'='' --form 'teacherId'='' --form 'classSchedule'=''
+      parameters:
+      - description: CourseOutline
+        in: body
+        name: CourseOutline
+        required: true
+        schema:
+          $ref: '#/definitions/model.CourseOutline'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Resp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Resp'
+      summary: Insert CourseOutline
+  /course_outline/query:
+    get:
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      description: |-
+        Query CourseOutline:
+        curl --location --request GET 'localhost:8080/course_outline/query?ids=1&ids=2&ids=3&limit=3&offset=1'
+      parameters:
+      - description: id list
+        in: query
+        name: ids
+        required: true
+        type: integer
+      - default: 0
+        description: limit
+        in: query
+        name: limit
+        type: integer
+      - default: 0
+        description: offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Resp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Resp'
+      summary: Query CourseOutline
+  /course_outline/update:
+    put:
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      description: |-
+        Update CourseOutline:
+        curl --location --request PUT 'localhost:8080/course_outline/update' --form 'id'='' --form 'term'='' --form 'courseId'='' --form 'teacherId'='' --form 'classSchedule'=''
+      parameters:
+      - description: CourseOutline
+        in: body
+        name: CourseOutline
+        required: true
+        schema:
+          $ref: '#/definitions/model.CourseOutline'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Resp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Resp'
+      summary: Update CourseOutline
+  /department/delete:
+    delete:
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      description: |-
+        Delete Department
+        curl --location --request DELETE 'localhost:8080/department/delete?ids=1&ids=2'
+      parameters:
+      - description: id list
+        in: query
+        name: ids
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Resp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Resp'
+      summary: Delete Department
+  /department/insert:
+    post:
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      description: |-
+        Insert Department:
+        curl --location --request POST 'localhost:8080/department/insert' --form 'departmentId'='' --form 'name'='' --form 'address'='' --form 'phone'=''
+      parameters:
+      - description: Department
+        in: body
+        name: Department
+        required: true
+        schema:
+          $ref: '#/definitions/model.Department'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Resp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Resp'
+      summary: Insert Department
+  /department/query:
+    get:
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      description: |-
+        Query Department:
+        curl --location --request GET 'localhost:8080/department/query?ids=1&ids=2&ids=3&limit=3&offset=1'
+      parameters:
+      - description: id list
+        in: query
+        name: ids
+        required: true
+        type: integer
+      - default: 0
+        description: limit
+        in: query
+        name: limit
+        type: integer
+      - default: 0
+        description: offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Resp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Resp'
+      summary: Query Department
+  /department/update:
+    put:
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      description: |-
+        Update Department:
+        curl --location --request PUT 'localhost:8080/department/update' --form 'id'='' --form 'departmentId'='' --form 'name'='' --form 'address'='' --form 'phone'=''
+      parameters:
+      - description: Department
+        in: body
+        name: Department
+        required: true
+        schema:
+          $ref: '#/definitions/model.Department'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Resp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Resp'
+      summary: Update Department
+  /elective/delete:
+    delete:
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      description: |-
+        Delete Elective
+        curl --location --request DELETE 'localhost:8080/elective/delete?ids=1&ids=2'
+      parameters:
+      - description: id list
+        in: query
+        name: ids
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Resp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Resp'
+      summary: Delete Elective
+  /elective/insert:
+    post:
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      description: |-
+        Insert Elective:
+        curl --location --request POST 'localhost:8080/elective/insert' --form 'studentId'='' --form 'term'='' --form 'courseId'='' --form 'teacherId'='' --form 'score'=''
+      parameters:
+      - description: Elective
+        in: body
+        name: Elective
+        required: true
+        schema:
+          $ref: '#/definitions/model.Elective'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Resp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Resp'
+      summary: Insert Elective
+  /elective/query:
+    get:
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      description: |-
+        Query Elective:
+        curl --location --request GET 'localhost:8080/elective/query?ids=1&ids=2&ids=3&limit=3&offset=1'
+      parameters:
+      - description: id list
+        in: query
+        name: ids
+        required: true
+        type: integer
+      - default: 0
+        description: limit
+        in: query
+        name: limit
+        type: integer
+      - default: 0
+        description: offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Resp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Resp'
+      summary: Query Elective
+  /elective/update:
+    put:
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      description: |-
+        Update Elective:
+        curl --location --request PUT 'localhost:8080/elective/update' --form 'id'='' --form 'studentId'='' --form 'term'='' --form 'courseId'='' --form 'teacherId'='' --form 'score'=''
+      parameters:
+      - description: Elective
+        in: body
+        name: Elective
+        required: true
+        schema:
+          $ref: '#/definitions/model.Elective'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Resp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Resp'
+      summary: Update Elective
+  /login:
+    post:
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      description: Parses a form and checks for specific data
+      parameters:
+      - default: "0"
+        description: username
+        in: body
+        name: username
+        schema:
+          type: string
+      - default: "0"
+        description: password
+        in: query
+        name: password
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Resp'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.Resp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Resp'
+      summary: Login
+  /logout:
+    get:
+      description: Logout and delete the session
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Resp'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.Resp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.Resp'
+      summary: Logout
+  /student/delete:
+    delete:
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      description: |-
+        Delete Student
+        curl --location --request DELETE 'localhost:8080/student/delete?ids=1&ids=2'
+      parameters:
+      - description: id list
+        in: query
+        name: ids
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Resp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Resp'
+      summary: Delete Student
+  /student/insert:
+    post:
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      description: |-
+        Insert Student:
+        curl --location --request POST 'localhost:8080/student/insert' --form 'studentId'='' --form 'password'='' --form 'name'='' --form 'sex'='' --form 'birthday'='' --form 'hometown'='' --form 'phone'='' --form 'departmentId'=''
+      parameters:
+      - description: Student
+        in: body
+        name: Student
+        required: true
+        schema:
+          $ref: '#/definitions/model.Student'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Resp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Resp'
+      summary: Insert Student
+  /student/query:
+    get:
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      description: |-
+        Query Student:
+        curl --location --request GET 'localhost:8080/student/query?ids=1&ids=2&ids=3&limit=3&offset=1'
+      parameters:
+      - description: id list
+        in: query
+        name: ids
+        required: true
+        type: integer
+      - default: 0
+        description: limit
+        in: query
+        name: limit
+        type: integer
+      - default: 0
+        description: offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Resp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Resp'
+      summary: Query Student
+  /student/update:
+    put:
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      description: |-
+        Update Student:
+        curl --location --request PUT 'localhost:8080/student/update' --form 'id'='' --form 'studentId'='' --form 'password'='' --form 'name'='' --form 'sex'='' --form 'birthday'='' --form 'hometown'='' --form 'phone'='' --form 'departmentId'=''
+      parameters:
+      - description: Student
+        in: body
+        name: Student
+        required: true
+        schema:
+          $ref: '#/definitions/model.Student'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Resp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Resp'
+      summary: Update Student
+swagger: "2.0"

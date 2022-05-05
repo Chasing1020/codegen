@@ -11,14 +11,13 @@ import (
 	"codegen/gen"
 	"fmt"
 	"os"
-	"os/exec"
 	"sync"
 )
 
 func Start() {
 	createDir()
 	genCode()
-	modTidy()
+	//modTidy()
 }
 
 var PathList = []string{"/dist/", "/dist/auth", "/dist/conf", "/dist/dal", "/dist/handler", "/dist/model", "/dist/router"}
@@ -56,32 +55,9 @@ func genCode() {
 		}(f)
 	}
 	wg.Wait()
-	fmt.Println("code generation finished")
-}
-
-func modTidy() {
-	err := os.Chdir(config.ProjectPath() + "/dist")
-	if err != nil {
-		panic(err)
-	}
-	err = exec.Command("go", "mod", "tidy").Run()
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println("go mod tidy finished")
-
-	for _, path := range []string{"conf", "auth", "dal", "handler", "model", "router"} {
-		err = exec.Command("go", "fmt", "./"+path).Run()
-		if err != nil {
-			panic(err)
-		}
-	}
-	fmt.Println("go source code format finished")
-
 	fmt.Println("===== Codegen Success! =====")
-
-	fmt.Println("use command `cd dist && go run main.go` to start")
-	fmt.Println("use `go get -u github.com/swaggo/swag/cmd/swag`")
-	fmt.Println("(1.16 or newer)`go install github.com/swaggo/swag/cmd/swag@latest`")
-	fmt.Println("use command `swag fmt && swag init` to generate documentation")
+	fmt.Println("1. Use `cd dist` to change to generated code directory")
+	fmt.Println("2. Use `make fmt` to prepare the environment")
+	fmt.Println("3. Use `make run` to start")
 }
+
