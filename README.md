@@ -29,12 +29,37 @@ CodeGen是一个基于Go实现的后端代码生成器，并支持生成文档�
 
 <img src="https://github.com/Chasing1020/codegen/blob/master/assets/postman_demo.png">
 
-## 3. 待改进
+## 3. 项目结构
+
+```txt
+dist
+├── Makefile  // projects controller
+├── auth      // authorization using cookie and session
+│   └── session.go
+├── conf      // config file
+│   ├── config.go
+│   └── config.yaml
+├── dal       // data access layer
+│   ├── user.go
+│   └── init.go
+├── go.mod    // module info
+├── handler   // request handlers
+│   └── user.go
+├── main.go
+├── model     // data structue
+│   ├── user.go
+│   └── response.go
+└── router    // request router
+    ├── actuator.go
+    └── router.go
+```
+
+## 4. 待改进
 
 支持消息队列，JWT，参数校验规则等。
 
-## 4. 关于
+## 5. 关于
 这个项目的灵感来自各种数据库相关的大作业，基于`避免重复造轮子`的原则，简化了新建项目的成本，并增加了对数据库与缓存的支持。
 
-## 5. 许可
+## 6. 许可
 本项目基于 2.0 版本的 APACHE 许可证，链接：http://www.apache.org/licenses/LICENSE-2.0
