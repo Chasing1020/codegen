@@ -19,7 +19,7 @@ CodeGen是一个基于Go实现的后端代码生成器，并支持生成文档�
 ## 2. 文档生成
 
 运行项目后访问 `http://localhost:8080/swagger/index.html` 即可，可见如下页面：
-<img src="https://github.com/Chasing1020/codegen/blob/master/assets/postman_demo.png">
+<img src="https://github.com/Chasing1020/codegen/blob/master/assets/swagger_index.png">
 
 在当前页面下可以直接执行请求，此外，也可以通过PostMan导入。链接为`http://localhost:8080/swagger/doc.json`，示意图如下：
 
