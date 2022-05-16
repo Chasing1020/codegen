@@ -40,6 +40,8 @@ func Dal() {
 	for _, table := range config.Conf.Tables {
 		WriteMethodsCode(path+"/dist/dal/"+config.ToSnakeCase(table.SnakeCase)+".go",
 			dal.HeadTemplate, dal.MethodsTemplate, table)
+		WriteMethodsCode(path+"/dist/dal/test/"+config.ToSnakeCase(table.SnakeCase)+"_test.go",
+			dal.MockHeadTemplate, dal.MockMethodTemplate, table)
 	}
 	log.Println(path + "/dist/dal/ generated")
 }

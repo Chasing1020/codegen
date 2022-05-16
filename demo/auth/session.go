@@ -1,21 +1,13 @@
-/*
-Copyright © 2022 zjc <chasing1020@gmail.com>
-Time: 2022/5/5-13:13
-File: session_tpl.go
-*/
-
-package auth
-
-var Template = `// Copyright © 2022 {{.Author}} <{{.Email}}>
-// Time: {{ .Time.Format "2006-01-02T15:04:05Z07:00" }}
+// Copyright © 2022 Chasing1020 <chasing1020@gmail.com>
+// Time: 2022-05-05T19:02:15+08:00
 // File: session.go
 
 package auth
 
 import (
-	"{{.Package}}/conf"
-	"{{.Package}}/dal"
-	"{{.Package}}/model"
+	"crud/conf"
+	"crud/dal"
+	"crud/model"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-contrib/sessions/redis"
@@ -61,7 +53,7 @@ func CookieRequired(c *gin.Context) {
 // @Success      200       object  model.Resp  success
 // @Failure      401       object  model.Resp  failed
 // @Failure      500       object  model.Resp  failed
-// @Router       /api/login [post]
+// @Router       /login [post]
 func Login(c *gin.Context) {
 	session := sessions.Default(c)
 	username := c.PostForm("username")
@@ -74,7 +66,7 @@ func Login(c *gin.Context) {
 	}
 
 	var students model.Student
-	if dal.DB.Where("username = ? AND password = ?", username, password).Find(&students).RowsAffected == 0 {
+	if dal.DB.Where("student_id = ? AND password = ?", username, password).Find(&students).RowsAffected == 0 {
 		c.JSON(401, gin.H{"error": "Authentication failed"})
 		return
 	}
@@ -95,7 +87,7 @@ func Login(c *gin.Context) {
 // @Success      200  object  model.Resp  success
 // @Failure      401  object  model.Resp  failed
 // @Failure      500  object  model.Resp  failed
-// @Router       /api/logout [get]
+// @Router       /logout [get]
 func Logout(c *gin.Context) {
 	session := sessions.Default(c)
 	user := session.Get("logged_in")
@@ -110,4 +102,3 @@ func Logout(c *gin.Context) {
 	}
 	c.JSON(200, gin.H{"message": "Successfully logged out"})
 }
-`

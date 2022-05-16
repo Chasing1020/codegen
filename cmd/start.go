@@ -20,11 +20,11 @@ func Start() {
 	//modTidy()
 }
 
-var PathList = []string{"/dist/", "/dist/auth", "/dist/conf", "/dist/dal", "/dist/handler", "/dist/model", "/dist/router"}
+var PathList = []string{"/", "/auth", "/conf", "/dal", "/handler", "/model", "/router", "/dal/test"}
 
 func createDir() {
 	for _, path := range PathList {
-		err := createDirIfNotExists(config.ProjectPath() + path)
+		err := createDirIfNotExists(config.ProjectPath() + "/dist"+path)
 		if err != nil {
 			panic(err)
 		}

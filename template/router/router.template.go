@@ -36,8 +36,9 @@ func init() {
 
 // InitEngine will create gin.Group and add handlers
 func InitEngine() *gin.Engine {
-	e := gin.Default()
-
+	e := gin.New()
+	e.Use(gin.Recovery())
+	e.Use(CORS())
 	// If you want to use Swagger, please use <swag fmt && swag init> command in the root directory
 	// See "http://localhost:8080/swagger/index.html" for more information
 	e.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
@@ -50,13 +51,15 @@ func InitEngine() *gin.Engine {
 		actuator.Use(auth.Session).GET("/health/session", SessionHealthHandler)
 	}
 
+	e.Use(gin.Logger())
 	// e.Use(auth.Session) // enable session authentication
+	
+	api := e.Group("/api")
 	// e.POST("/login", auth.Login)
 	// e.GET("/logout", auth.Logout)
 
-
 	{{range .Tables}}
-	{{.LowerCamelCase}} := e.Group("/{{.SnakeCase}}")
+	{{.LowerCamelCase}} := api.Group("/{{.SnakeCase}}")
     // {{.LowerCamelCase}}.Use(auth.CookieRequired) // uncomment to require authentication to access
 	{
 		{{.LowerCamelCase}}.GET("/query", handler.Get{{.Name}}Handler)
@@ -66,5 +69,19 @@ func InitEngine() *gin.Engine {
 	}
 	{{end}}
 	return e
+}
+
+
+
+func CORS() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", c.GetHeader("Origin"))
+		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+		c.Next()
+	}
 }
 `

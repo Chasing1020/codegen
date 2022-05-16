@@ -85,3 +85,14 @@ schema:
           type: "string"
         - name: "department_id"
           type: "string"
+
+    - name: "teacher"
+      columns:
+        - name: "teacher_id"
+          type: "string"
+        - name: "name"
+          type: "string"
+        - name: "sex"
+          type: "string"
+        - name: "department_id"
+          type: "string"

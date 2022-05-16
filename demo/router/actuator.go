@@ -1,19 +1,11 @@
-/*
-Copyright © 2022 zjc <chasing1020@gmail.com>
-Time: 2022/5/5-15:57
-File: actuator.go
-*/
-
-package router
-
-var ActuatorHeadTemplate = `// Copyright © 2022 {{.Author}} <{{.Email}}>
-// Time: {{.Time.Format "2006-01-02T15:04:05Z07:00" }}
+// Copyright © 2022 Chasing1020 <chasing1020@gmail.com>
+// Time: 2022-05-05T19:02:15+08:00
 // File: actuator.go
 
 package router
 
 import (
-	"{{.Package}}/dal"
+	"crud/dal"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -87,4 +79,3 @@ func SessionHealthHandler(c *gin.Context) {
 	}
 	c.JSON(200, gin.H{"count": count})
 }
-`

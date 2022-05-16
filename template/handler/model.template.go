@@ -32,7 +32,7 @@ var MethodsTemplate = `
 // @Param        {{.Name}}  body    model.{{.Name}} true "{{.Name}}"
 // @Success      200       object  model.Resp  success
 // @Failure      400       object  model.Resp  failed
-// @Router       /{{.SnakeCase}}/insert [post]
+// @Router       /api/{{.SnakeCase}}/insert [post]
 func Post{{.Name}}Handler(c *gin.Context) {
 	var {{.LowerCamelCase}} model.{{.Name}}
 	err := c.ShouldBind(&{{.LowerCamelCase}})
@@ -46,7 +46,7 @@ func Post{{.Name}}Handler(c *gin.Context) {
 		c.JSON(400, model.Resp{Code: 400, Message: "del.Create{{.Name}} failed:" + err.Error(), Data: nil})
 		return
 	}
-	c.JSON(200, model.Resp{Code: 200, Message: "success", Data: nil})
+	c.JSON(200, model.Resp{Code: 200, Message: "success", Data: {{.LowerCamelCase}}})
 }
 
 // Get{{.Name}}Handler godoc
@@ -61,7 +61,7 @@ func Post{{.Name}}Handler(c *gin.Context) {
 // @Param        offset  query   int         false  "offset"  default(0)
 // @Success      200       object  model.Resp  success
 // @Failure      400       object  model.Resp  failed
-// @Router       /{{.SnakeCase}}/query [get]
+// @Router       /api/{{.SnakeCase}}/query [get]
 func Get{{.Name}}Handler(c *gin.Context) {
 	ids, ok := c.GetQueryArray("ids")
 	if !ok {
@@ -98,7 +98,7 @@ func Get{{.Name}}Handler(c *gin.Context) {
 // @Param        {{.Name}}  body    model.{{.Name}} true "{{.Name}}"
 // @Success      200       object  model.Resp  success
 // @Failure      400       object  model.Resp  failed
-// @Router       /{{.SnakeCase}}/update [put]
+// @Router       /api/{{.SnakeCase}}/update [put]
 func Put{{.Name}}Handler(c *gin.Context) {
 	var {{.LowerCamelCase}} *model.{{.Name}}
 	err := c.ShouldBind(&{{.LowerCamelCase}})
@@ -130,7 +130,7 @@ func Put{{.Name}}Handler(c *gin.Context) {
 // @Success      200       object  model.Resp  success
 // @Success 200 object model.Resp success
 // @Failure 400 object model.Resp failed
-// @Router /{{.SnakeCase}}/delete [delete]
+// @Router       /api/{{.SnakeCase}}/delete [delete]
 func Delete{{.Name}}Handler(c *gin.Context) {
 	ids, ok := c.GetQueryArray("ids")
 	if !ok {
