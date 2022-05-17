@@ -54,18 +54,17 @@ func InitEngine() *gin.Engine {
 	e.Use(gin.Logger())
 	// e.Use(auth.Session) // enable session authentication
 	
-	api := e.Group("/api")
 	// e.POST("/login", auth.Login)
 	// e.GET("/logout", auth.Logout)
 
 	{{range .Tables}}
-	{{.LowerCamelCase}} := api.Group("/{{.SnakeCase}}")
+	{{.LowerCamelCase}} := e.Group("/{{.SnakeCase}}")
     // {{.LowerCamelCase}}.Use(auth.CookieRequired) // uncomment to require authentication to access
 	{
 		{{.LowerCamelCase}}.GET("/query", handler.Get{{.Name}}Handler)
-		{{.LowerCamelCase}}.POST("/insert", handler.Post{{.Name}}Handler)
-		{{.LowerCamelCase}}.PUT("/update", handler.Put{{.Name}}Handler)
-		{{.LowerCamelCase}}.DELETE("/delete", handler.Delete{{.Name}}Handler)
+		{{.LowerCamelCase}}.POST("/insert", handler.Insert{{.Name}}Handler)
+		{{.LowerCamelCase}}.POST("/update", handler.Update{{.Name}}Handler)
+		{{.LowerCamelCase}}.POST("/delete", handler.Delete{{.Name}}Handler)
 	}
 	{{end}}
 	return e

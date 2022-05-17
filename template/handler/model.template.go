@@ -32,18 +32,18 @@ var MethodsTemplate = `
 // @Param        {{.Name}}  body    model.{{.Name}} true "{{.Name}}"
 // @Success      200       object  model.Resp  success
 // @Failure      400       object  model.Resp  failed
-// @Router       /api/{{.SnakeCase}}/insert [post]
+// @Router       /{{.SnakeCase}}/insert [post]
 func Post{{.Name}}Handler(c *gin.Context) {
 	var {{.LowerCamelCase}} model.{{.Name}}
 	err := c.ShouldBind(&{{.LowerCamelCase}})
 	if err != nil {
-		c.JSON(400, model.Resp{Code: 400, Message: "c.ShouldBind(&{{.LowerCamelCase}}) failed:" + err.Error(), Data: nil})
+		c.JSON(400, model.Resp{Code: 400, Message: "c.ShouldBind(&{{.LowerCamelCase}}) failed:" + err.Error()})
 		return
 	}
 
 	err = dal.Create{{.Name}}(c, &{{.LowerCamelCase}})
 	if err != nil {
-		c.JSON(400, model.Resp{Code: 400, Message: "del.Create{{.Name}} failed:" + err.Error(), Data: nil})
+		c.JSON(400, model.Resp{Code: 400, Message: "del.Create{{.Name}} failed:" + err.Error()})
 		return
 	}
 	c.JSON(200, model.Resp{Code: 200, Message: "success", Data: {{.LowerCamelCase}}})
@@ -61,59 +61,58 @@ func Post{{.Name}}Handler(c *gin.Context) {
 // @Param        offset  query   int         false  "offset"  default(0)
 // @Success      200       object  model.Resp  success
 // @Failure      400       object  model.Resp  failed
-// @Router       /api/{{.SnakeCase}}/query [get]
+// @Router       /{{.SnakeCase}}/query [get]
 func Get{{.Name}}Handler(c *gin.Context) {
 	ids, ok := c.GetQueryArray("ids")
 	if !ok {
-		c.JSON(400, model.Resp{Code: 400, Message: "c.GetQueryArray(\"ids\") failed", Data: nil})
+		c.JSON(400, model.Resp{Code: 400, Message: "c.GetQueryArray(\"ids\") failed"})
 		return
 	}
 	limit, err := strconv.Atoi(c.DefaultQuery("limit", "0"))
 	if err != nil {
-		c.JSON(400, model.Resp{Code: 400, Message: "cast limit failed: " + err.Error(), Data: nil})
+		c.JSON(400, model.Resp{Code: 400, Message: "cast limit failed: " + err.Error()})
 		return
 	}
 	offset, err := strconv.Atoi(c.DefaultQuery("offset", "0"))
 	if err != nil {
-		c.JSON(400, model.Resp{Code: 400, Message: "cast offset failed: " + err.Error(), Data: nil})
+		c.JSON(400, model.Resp{Code: 400, Message: "cast offset failed: " + err.Error()})
 		return
 	}
 
 	{{.LowerCamelCase}}s, err := dal.Get{{.Name}}s(c, ids, limit, offset)
 
 	if err != nil {
-		c.JSON(404, model.Resp{Code: 400, Message: "not found: " + err.Error(), Data: nil})
+		c.JSON(404, model.Resp{Code: 404, Message: "not found: " + err.Error()})
 		return
 	}
 	c.JSON(200, model.Resp{Code: 200, Message: "success", Data: {{.LowerCamelCase}}s})
 }
 
-// Put{{.Name}}Handler godoc
+// Update{{.Name}}Handler godoc
 // @Summary      Update {{.Name}}
 // @Description  Update {{.Name}}:
-// @Description  curl --location --request PUT 'localhost:8080/{{.SnakeCase}}/update' --form 'id'=''{{range .Columns}} --form '{{.LowerCamelCase}}'=''{{end}}
 // @Accept       application/json
 // @Accept       application/x-www-form-urlencoded
 // @Produce      json
 // @Param        {{.Name}}  body    model.{{.Name}} true "{{.Name}}"
 // @Success      200       object  model.Resp  success
 // @Failure      400       object  model.Resp  failed
-// @Router       /api/{{.SnakeCase}}/update [put]
-func Put{{.Name}}Handler(c *gin.Context) {
+// @Router       /{{.SnakeCase}}/update [put]
+func Update{{.Name}}Handler(c *gin.Context) {
 	var {{.LowerCamelCase}} *model.{{.Name}}
 	err := c.ShouldBind(&{{.LowerCamelCase}})
 	if err != nil {
-		c.JSON(400, model.Resp{Code: 400, Message: "c.ShouldBind(&{{.LowerCamelCase}}) failed:" + err.Error(), Data: nil})
+		c.JSON(400, model.Resp{Code: 400, Message: "c.ShouldBind(&{{.LowerCamelCase}}) failed:" + err.Error()})
 		return
 	}
 	if {{.LowerCamelCase}}.ID == 0 {
-		c.JSON(400, model.Resp{Code: 400, Message: "parameter 'id' required", Data: nil})
+		c.JSON(400, model.Resp{Code: 400, Message: "parameter 'id' required"})
 		return
 	}
 
 	err = dal.Update{{.Name}}(c, {{.LowerCamelCase}})
 	if err != nil {
-		c.JSON(400, model.Resp{Code: 400, Message: "dal.Update{{.Name}}(c, {{.LowerCamelCase}}) failed:" + err.Error(), Data: nil})
+		c.JSON(400, model.Resp{Code: 400, Message: "dal.Update{{.Name}}(c, {{.LowerCamelCase}}) failed:" + err.Error()})
 		return
 	}
 	c.JSON(200, model.Resp{Code: 200, Message: "success", Data: {{.LowerCamelCase}}})
@@ -122,36 +121,28 @@ func Put{{.Name}}Handler(c *gin.Context) {
 // Delete{{.Name}}Handler godoc
 // @Summary      Delete {{.Name}}
 // @Description  Delete {{.Name}}
-// @Description  curl --location --request DELETE 'localhost:8080/{{.SnakeCase}}/delete?ids=1&ids=2'
 // @Accept       application/json
 // @Accept       application/x-www-form-urlencoded
 // @Produce      json
-// @Param        ids       query   int         true   "id list"
+// @Param        {{.Name}}  body    model.{{.Name}} true "{{.Name}}"
 // @Success      200       object  model.Resp  success
 // @Success 200 object model.Resp success
 // @Failure 400 object model.Resp failed
 // @Router       /api/{{.SnakeCase}}/delete [delete]
 func Delete{{.Name}}Handler(c *gin.Context) {
-	ids, ok := c.GetQueryArray("ids")
-	if !ok {
-		c.JSON(400, model.Resp{
-			Code:    400,
-			Message: "c.GetQueryArray(\"ids\") failed.",
-			Data:    nil,
-		})
+	var {{.LowerCamelCase}} *model.{{.Name}}
+	err := c.ShouldBind(&{{.LowerCamelCase}})
+	if err != nil {
+		c.JSON(400, model.Resp{Code: 400, Message: "c.ShouldBind(&{{.LowerCamelCase}}) failed:" + err.Error()})
 		return
 	}
 
-	{{.LowerCamelCase}}s, err := dal.Delete{{.Name}}s(c, ids)
+	{{.LowerCamelCase}}, err := dal.Delete{{.Name}}s(c, id)
 
 	if err != nil {
-		c.JSON(400, model.Resp{
-			Code:    400,
-			Message: "func dal.Delete{{.Name}}s(c, ids) failed:" + err.Error(),
-			Data:    nil,
-		})
+		c.JSON(400, model.Resp{Code: 400, Message: "func dal.Delete{{.Name}}s(c, ids) failed:" + err.Error()})
 		return
 	}
-	c.JSON(200, model.Resp{Code: 200, Message: "success", Data: {{.LowerCamelCase}}s})
+	c.JSON(200, model.Resp{Code: 200, Message: "success", Data: {{.LowerCamelCase}}})
 }
 `

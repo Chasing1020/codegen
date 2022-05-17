@@ -37,7 +37,7 @@ func registerHealthChecker() {
 		Address: LocalIP,
 	}
 
-	actuators := []string{"", "/redis", "/mysql"}
+	actuators := []string{"/", "/redis", "/mysql"}
 	for _, actuator := range actuators {
 		registration.Checks = append(registration.Checks, &api.AgentServiceCheck{
 			HTTP:                           fmt.Sprintf("http://%s:%d/actuator/health%s", LocalIP, ServicePort, actuator),

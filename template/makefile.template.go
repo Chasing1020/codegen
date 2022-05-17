@@ -25,7 +25,7 @@ build:
 	go build -o $(BINARY_NAME)
 
 .PHONY: fmt
-fmt: install
+fmt:
 	swag fmt && swag init
 	go mod tidy
 	gofmt -s -w $(GO_FILES)
