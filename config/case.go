@@ -50,20 +50,20 @@ func ToLowerCamelCase(snake string) (camel string) {
 
 func ToDefaultValue(valueType string) string {
 	if valueType == "" {
-		return ""
+		return ``
 	}
 	if valueType[0] == '*' || valueType[0] == '[' {
-		return "nil"
+		return `nil`
 	}
 	switch valueType {
 	case "int", "int8", "int16", "int32", "int64", "uint", "uint8", "uint16", "uint32", "uint64":
-		return "0"
+		return `0`
 	case "float32", "float64":
-		return "0.0"
+		return `0.0`
 	case "string", "byte", "rune":
 		return `""`
 	case "bool":
-		return "false"
+		return `false`
 	}
 	return `""`
 }

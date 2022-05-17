@@ -61,7 +61,8 @@ func InitEngine() *gin.Engine {
 	{{.LowerCamelCase}} := e.Group("/{{.SnakeCase}}")
     // {{.LowerCamelCase}}.Use(auth.CookieRequired) // uncomment to require authentication to access
 	{
-		{{.LowerCamelCase}}.GET("/query", handler.Get{{.Name}}Handler)
+		{{.LowerCamelCase}}.GET("/get", handler.Get{{.Name}}Handler)
+		{{.LowerCamelCase}}.POST("/query", handler.Query{{.Name}}Handler)
 		{{.LowerCamelCase}}.POST("/insert", handler.Insert{{.Name}}Handler)
 		{{.LowerCamelCase}}.POST("/update", handler.Update{{.Name}}Handler)
 		{{.LowerCamelCase}}.POST("/delete", handler.Delete{{.Name}}Handler)
