@@ -34,7 +34,6 @@ func TestToLower(t *testing.T) {
 		}
 	}
 	fmt.Println(Conf)
-
 }
 
 

@@ -61,9 +61,9 @@ func ToDefaultValue(valueType string) string {
 	case "float32", "float64":
 		return "0.0"
 	case "string", "byte", "rune":
-		return ""
+		return `""`
 	case "bool":
 		return "false"
 	}
-	return ""
+	return `""`
 }

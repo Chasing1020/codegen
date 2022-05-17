@@ -22,13 +22,29 @@ import (
 
 
 var MethodsTemplate = `
-// Get{{.Name}}s will query {{.Name}} by ids, limit and offset
-func Get{{.Name}}s(ctx context.Context, ids []string, limit int, offset int) ([]model.{{.Name}}, error) {
-	var {{.LowerCamelCase}}s []model.{{.Name}}
-	if len(ids) == 0 {
-		return nil, nil
+// Get{{.Name}}ById will query {{.Name}} by id
+func Get{{.Name}}ById(ctx context.Context, id string) (*model.{{.Name}}, error) {
+	var {{.LowerCamelCase}} *model.{{.Name}}
+	if id == "0" { return nil, nil }
+	err := DB.WithContext(ctx).First(&{{.LowerCamelCase}}, id).Error
+	if err != nil {
+		log.Println("func Get{{.Name}}s failed: ", err)
+		return nil, err
 	}
+	return {{.LowerCamelCase}}, nil
+}
+
+
+// Query{{.Name}}s will query {{.Name}} by given Parameters
+func Query{{.Name}}s(ctx context.Context, param *model.{{.Name}}, limit, offset int) ([]*model.{{.Name}}, error) {
+	if param == nil { return nil, nil }
+	var {{.LowerCamelCase}}s []*model.{{.Name}}
+
 	conn := DB.WithContext(ctx)
+	{{range .Columns}}
+	if param.{{.Name}} != {{.DefaultValue}} {
+		conn = conn.Where("{{.SnakeCase}} = ?", param.{{.Name}})
+	}{{end}}
 
 	if limit <= 0 && limit >= 500 {
 		limit = 100
@@ -37,8 +53,7 @@ func Get{{.Name}}s(ctx context.Context, ids []string, limit int, offset int) ([]
 	if offset > 0 {
 		conn = conn.Offset(offset)
 	}
-
-	err := conn.Find(&{{.LowerCamelCase}}s, ids).Error
+	err := conn.Find(&{{.LowerCamelCase}}s).Error
 	if err != nil {
 		log.Println("func Get{{.Name}}s failed: ", err)
 		return nil, err
@@ -46,10 +61,10 @@ func Get{{.Name}}s(ctx context.Context, ids []string, limit int, offset int) ([]
 	return {{.LowerCamelCase}}s, nil
 }
 
+
 // Create{{.Name}} will create a(n) {{.Name}} by *model.{{.Name}}
 func Create{{.Name}}(ctx context.Context, {{.LowerCamelCase}} *model.{{.Name}}) error {
-	conn := DB.WithContext(ctx)
-	err := conn.Create(&{{.LowerCamelCase}}).Error
+	err := DB.WithContext(ctx).Create(&{{.LowerCamelCase}}).Error
 	if err != nil {
 		log.Println("func Create{{.Name}} failed: ", err)
 		return err
@@ -59,8 +74,7 @@ func Create{{.Name}}(ctx context.Context, {{.LowerCamelCase}} *model.{{.Name}}) 
 
 // Update{{.Name}} will update a(n) {{.Name}} by *model.{{.Name}}.ID and set the value to *model.{{.Name}}
 func Update{{.Name}}(ctx context.Context, {{.LowerCamelCase}} *model.{{.Name}}) error {
-	conn := DB.WithContext(ctx)
-	err := conn.Where("id = ?", {{.LowerCamelCase}}.ID).Updates({{.LowerCamelCase}}).Error
+	err := DB.WithContext(ctx).Where("id = ?", param.ID).Updates({{.LowerCamelCase}}).Error
 	if err != nil {
 		log.Println("func Update{{.Name}} failed: ", err)
 		return err
@@ -68,14 +82,22 @@ func Update{{.Name}}(ctx context.Context, {{.LowerCamelCase}} *model.{{.Name}}) 
 	return nil
 }
 
-// Delete{{.Name}}ById will delete {{.Name}} by id
-func Delete{{.Name}}ById (ctx context.Context, id string) ([]model.{{.Name}}, error) {
-	var {{.LowerCamelCase}}s []model.{{.Name}}
+// Delete{{.Name}}s will delete {{.Name}} by param
+func Delete{{.Name}}s(ctx context.Context, param *model.{{.Name}}) ([]*model.{{.Name}}, error) {
+	if {{.LowerCamelCase}} == nil {return nil, nil}
+	var {{.LowerCamelCase}}s []*model.{{.Name}}
+
 	conn := DB.WithContext(ctx)
-	err := conn.Where("id IN ?", id).Delete(&{{.LowerCamelCase}}s).Error
+	{{range .Columns}}
+	if {{.LowerCamelCase}}.{{.Name}} != {{.DefaultValue}} {
+		conn = conn.Where("{{.SnakeCase}} = ?", param.{{.Name}})
+	}{{end}}
+
+	err := conn.Delete(&{{.LowerCamelCase}}s).Error
 	if err != nil {
-		log.Println("func Delete{{.Name}}s failed: ", err)
+		log.Println("func Get{{.Name}}s failed: ", err)
 		return nil, err
 	}
 	return {{.LowerCamelCase}}s, nil
-}`
+}
+`

@@ -14,7 +14,6 @@ import (
 )
 
 func TestModel(t *testing.T) {
-
 	headTemplate, err := template.New("HeadTemplate").Parse(HeadTemplate)
 	if err != nil {
 		panic(err)
