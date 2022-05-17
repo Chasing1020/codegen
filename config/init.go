@@ -32,6 +32,7 @@ func init() {
 			column.Name = ToUpperCamelCase(column.Name)
 			column.LowerCamelCase = ToLowerCamelCase(column.Name)
 			column.SnakeCase = ToSnakeCase(column.Name)
+			column.DefaultValue = ToDefaultValue(column.Type)
 		}
 	}
 }

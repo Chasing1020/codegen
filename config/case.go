@@ -17,7 +17,7 @@ var matchAllCap = regexp.MustCompile("([a-z0-9])([A-Z])")
 func ToSnakeCase(camel string) (snake string) {
 	snake = matchFirstCap.ReplaceAllString(camel, "${1}_${2}")
 	snake = matchAllCap.ReplaceAllString(snake, "${1}_${2}")
-	snake =  strings.ToLower(snake)
+	snake = strings.ToLower(snake)
 	return
 }
 
@@ -46,4 +46,24 @@ func ToLowerCamelCase(snake string) (camel string) {
 	camel = ToUpperCamelCase(snake)
 	camel = strings.ToLower(camel[:1]) + camel[1:]
 	return
+}
+
+func ToDefaultValue(valueType string) string {
+	if valueType == "" {
+		return ""
+	}
+	if valueType[0] == '*' || valueType[0] == '[' {
+		return "nil"
+	}
+	switch valueType {
+	case "int", "int8", "int16", "int32", "int64", "uint", "uint8", "uint16", "uint32", "uint64":
+		return "0"
+	case "float32", "float64":
+		return "0.0"
+	case "string", "byte", "rune":
+		return ""
+	case "bool":
+		return "false"
+	}
+	return ""
 }

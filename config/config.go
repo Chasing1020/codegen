@@ -40,6 +40,7 @@ type Column struct {
 	LowerCamelCase string  // exp: createdAt
 	SnakeCase      string  // exp: created_at
 	Type           string `yaml:"type"`
+	DefaultValue   string  // exp: 0, ""
 }
 
 type MySQLConf struct {

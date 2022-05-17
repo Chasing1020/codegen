@@ -25,6 +25,8 @@ schema:
           type: "string"
         - name: "credit"
           type: "int"
+        - name: "teacher_id"
+          type: "int"
         - name: "teacher_name"
           type: "string"
         - name: "teacher_title"
@@ -66,8 +68,6 @@ schema:
       columns:
         - name: "student_id"
           type: "int"
-        - name: "term"
-          type: "string"
         - name: "course_id"
           type: "int"
         - name: "teacher_id"

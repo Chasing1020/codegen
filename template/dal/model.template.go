@@ -68,11 +68,11 @@ func Update{{.Name}}(ctx context.Context, {{.LowerCamelCase}} *model.{{.Name}}) 
 	return nil
 }
 
-// Delete{{.Name}}s will delete all {{.Name}} by ids
-func Delete{{.Name}}s(ctx context.Context, id []string) ([]model.{{.Name}}, error) {
+// Delete{{.Name}}ById will delete {{.Name}} by id
+func Delete{{.Name}}ById (ctx context.Context, id string) ([]model.{{.Name}}, error) {
 	var {{.LowerCamelCase}}s []model.{{.Name}}
 	conn := DB.WithContext(ctx)
-	err := conn.Where("id IN ?", ids).Delete(&{{.LowerCamelCase}}s).Error
+	err := conn.Where("id IN ?", id).Delete(&{{.LowerCamelCase}}s).Error
 	if err != nil {
 		log.Println("func Delete{{.Name}}s failed: ", err)
 		return nil, err
