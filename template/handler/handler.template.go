@@ -139,22 +139,24 @@ func Get{{.Name}}Handler(c *gin.Context) {
 // @Failure      404       object  model.Resp  failed
 // @Router       /{{.SnakeCase}}/query [post]
 func Query{{.Name}}Handler(c *gin.Context) {
-	var param struct {
+	var req struct {
 		*model.{{.Name}}
-		Limit  int `+"`"+`json:"limit" form:"limit"`+"`"+`
-		Offset int `+"`"+`json:"offset" form:"offset"`+"`"+`
+		Limit     int `+"`"+`json:"limit" form:"limit"`+"`"+`
+		Offset    int `+"`"+`json:"offset" form:"offset"`+"`"+`
+		NeedCount bool `+"`"+`json:"needCount" form:"needCount"`+"`"+`
 	}
-	err := c.ShouldBind(&param)
+	err := c.ShouldBind(&req)
 	if err != nil {
 		c.JSON(400, model.Resp{Code: 400, Message: "c.ShouldBind(&{{.LowerCamelCase}}) failed: " + err.Error()})
 		return
 	}
 
-	{{.LowerCamelCase}}s, err := dal.Query{{.Name}}s(c, param.{{.Name}}, param.Limit, param.Offset)
+	{{.LowerCamelCase}}s, count, err := dal.Query{{.Name}}s(c, req.{{.Name}}, req.Limit, req.Offset, req.NeedCount)
 	if err != nil {
 		c.JSON(404, model.Resp{Code: 404, Message: "not found: " + err.Error()})
 		return
 	}
-	c.JSON(200, model.Resp{Code: 200, Message: "success", Data: {{.LowerCamelCase}}s})
+	c.JSON(200, model.Resp{Code: 200, Message: "success",
+		Data: gin.H{"{{.LowerCamelCase}}": {{.LowerCamelCase}}s, "count": count}})
 }
 `

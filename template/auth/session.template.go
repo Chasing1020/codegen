@@ -44,7 +44,7 @@ func CookieRequired(c *gin.Context) {
 	session := sessions.Default(c)
 	user := session.Get("logged_in")
 	if user == nil {
-		c.AbortWithStatusJSON(401, gin.H{"error": "unauthorized"})
+		c.AbortWithStatusJSON(401, model.Resp{Code:401, Message: "Authentication failed"})
 		return
 	}
 	c.Next()
@@ -61,7 +61,7 @@ func CookieRequired(c *gin.Context) {
 // @Success      200       object  model.Resp  success
 // @Failure      401       object  model.Resp  failed
 // @Failure      500       object  model.Resp  failed
-// @Router       /api/login [post]
+// @Router       /login [post]
 func Login(c *gin.Context) {
 	session := sessions.Default(c)
 	username := c.PostForm("username")
@@ -69,13 +69,13 @@ func Login(c *gin.Context) {
 
 	// Validate form input
 	if strings.Trim(username, " ") == "" || strings.Trim(password, " ") == "" {
-		c.JSON(403, gin.H{"error": "Parameters can't be empty"})
+		c.JSON(403, model.Resp{Code:403, Message: "Parameters can't be empty"})
 		return
 	}
 
 	var students model.Student
 	if dal.DB.Where("username = ? AND password = ?", username, password).Find(&students).RowsAffected == 0 {
-		c.JSON(401, gin.H{"error": "Authentication failed"})
+		c.JSON(401, model.Resp{Code:403, Message: "Authentication failed"})
 		return
 	}
 
@@ -85,7 +85,7 @@ func Login(c *gin.Context) {
 		c.JSON(500, gin.H{"error": "Failed to save session"})
 		return
 	}
-	c.JSON(200, gin.H{"message": "Successfully authenticated user"})
+	c.JSON(200, model.Resp{Code:200, Message: "Login successful"})
 }
 
 // Logout godoc
@@ -95,19 +95,19 @@ func Login(c *gin.Context) {
 // @Success      200  object  model.Resp  success
 // @Failure      401  object  model.Resp  failed
 // @Failure      500  object  model.Resp  failed
-// @Router       /api/logout [get]
+// @Router       /logout [get]
 func Logout(c *gin.Context) {
 	session := sessions.Default(c)
 	user := session.Get("logged_in")
 	if user == nil {
-		c.JSON(401, gin.H{"error": "Invalid session token"})
+		c.JSON(401, model.Resp{Code:403, Message: "Authentication failed"})
 		return
 	}
 	session.Delete("logged_in")
 	if err := session.Save(); err != nil {
-		c.JSON(500, gin.H{"error": "Failed to save session"})
+		c.JSON(500, model.Resp{Code:500, Message: "Internel server error"})
 		return
 	}
-	c.JSON(200, gin.H{"message": "Successfully logged out"})
+	c.JSON(200, model.Resp{Code:200, Message: "Logout successful"})
 }
 `

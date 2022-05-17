@@ -37,15 +37,15 @@ func Delete{{.Name}}s(ctx context.Context, param *model.{{.Name}}) ([]*model.{{.
 	if param == nil {return nil, nil}
 	var {{.LowerCamelCase}}s []*model.{{.Name}}
 
-	conn := DB.WithContext(ctx)
+	session := DB.WithContext(ctx)
 	if param.ID != 0 {
-		conn = conn.Where("id = ?", param.ID)
+		session = session.Where("id = ?", param.ID)
 	}{{range .Columns}}
 	if param.{{.Name}} != {{.DefaultValue}} {
-		conn = conn.Where("{{.SnakeCase}} = ?", param.{{.Name}})
+		session = session.Where("{{.SnakeCase}} = ?", param.{{.Name}})
 	}{{end}}
 
-	err := conn.Delete(&{{.LowerCamelCase}}s).Error
+	err := session.Delete(&{{.LowerCamelCase}}s).Error
 	if err != nil {
 		log.Println("func Get{{.Name}}s failed: ", err)
 		return nil, err
@@ -76,30 +76,38 @@ func Get{{.Name}}ById(ctx context.Context, id string) (*model.{{.Name}}, error) 
 }
 
 // Query{{.Name}}s will query {{.Name}} by given Parameters
-func Query{{.Name}}s(ctx context.Context, param *model.{{.Name}}, limit, offset int) ([]*model.{{.Name}}, error) {
-	if param == nil { return nil, nil }
+func Query{{.Name}}s(ctx context.Context, param *model.{{.Name}}, limit, offset int, needCount bool) ([]*model.{{.Name}}, int64, error) {
+	if param == nil { return nil, 0, nil }
 	var {{.LowerCamelCase}}s []*model.{{.Name}}
+	var count int64
 
-	conn := DB.WithContext(ctx)
+	session := DB.WithContext(ctx)
 	if param.ID != 0 {
-		conn = conn.Where("id = ?", param.ID)
+		session = session.Where("id = ?", param.ID)
 	}{{range .Columns}}
 	if param.{{.Name}} != {{.DefaultValue}} {
-		conn = conn.Where("{{.SnakeCase}} = ?", param.{{.Name}})
+		session = session.Where("{{.SnakeCase}} = ?", param.{{.Name}})
 	}{{end}}
+
+	if needCount {
+		err := session.Model(&param).Count(&count).Error
+		if err != nil {
+			return nil, 0, err
+		}
+	}
 
 	if limit <= 0 && limit >= 500 {
 		limit = 100
 	}
-	conn = conn.Limit(limit)
+	session = session.Limit(limit)
 	if offset > 0 {
-		conn = conn.Offset(offset)
+		session = session.Offset(offset)
 	}
-	err := conn.Find(&{{.LowerCamelCase}}s).Error
-	if err != nil {
-		log.Println("func Get{{.Name}}s failed: ", err)
-		return nil, err
+	result := session.Find(&{{.LowerCamelCase}}s)
+	if result.Error != nil {
+		log.Println("func Get{{.Name}}s failed: ", result.Error)
+		return nil, 0, result.Error
 	}
-	return {{.LowerCamelCase}}s, nil
+	return {{.LowerCamelCase}}s, count, nil
 }
 `

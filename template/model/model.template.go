@@ -20,8 +20,8 @@ var StructTemplate = `
 type {{.Name}} struct {
 	ID         int `+"`"+`json:"id,omitempty" gorm:"primaryKey;autoIncrement" form:"id" swaggerignore:"true"`+"`"+` {{range .Columns}}
 	{{.Name}}  {{.Type}} `+"`"+`json:"{{.LowerCamelCase}},omitempty" form:"{{.LowerCamelCase}}"`+"`"+`{{end}}    
-	CreatedAt time.Time `+"`"+`json:"create_at,omitempty" swaggerignore:"true"`+"`"+`
-	UpdatedAt time.Time `+"`"+`json:"update_at,omitempty" swaggerignore:"true"`+"`"+` 
+	CreatedAt time.Time `+"`"+`json:"createAt,omitempty" swaggerignore:"true"`+"`"+`
+	UpdatedAt time.Time `+"`"+`json:"updateAt,omitempty" swaggerignore:"true"`+"`"+` 
 }
 
 // TableName will use the name of the table for gorm
