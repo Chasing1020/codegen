@@ -1,7 +1,7 @@
 /*
 Copyright © 2022 zjc <chasing1020@gmail.com>
 Time: 2022/4/7-17:16
-File: model.go
+File: handler.go
 */
 
 package handler
@@ -139,14 +139,18 @@ func Get{{.Name}}Handler(c *gin.Context) {
 // @Failure      404       object  model.Resp  failed
 // @Router       /{{.SnakeCase}}/query [post]
 func Query{{.Name}}Handler(c *gin.Context) {
-	var {{.LowerCamelCase}} *model.{{.Name}}
-	err := c.ShouldBind(&{{.LowerCamelCase}})
+	var param struct {
+		*model.{{.Name}}
+		Limit  int `+"`"+`json:"limit" form:"limit"`+"`"+`
+		Offset int `+"`"+`json:"offset" form:"offset"`+"`"+`
+	}
+	err := c.ShouldBind(&param)
 	if err != nil {
 		c.JSON(400, model.Resp{Code: 400, Message: "c.ShouldBind(&{{.LowerCamelCase}}) failed: " + err.Error()})
 		return
 	}
 
-	{{.LowerCamelCase}}s, err := dal.Query{{.Name}}s(c, {{.LowerCamelCase}}, 100, 0) // TODO: add limit support
+	{{.LowerCamelCase}}s, err := dal.Query{{.Name}}s(c, param.{{.Name}}, param.Limit, param.Offset)
 	if err != nil {
 		c.JSON(404, model.Resp{Code: 404, Message: "not found: " + err.Error()})
 		return

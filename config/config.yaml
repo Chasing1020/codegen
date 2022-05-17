@@ -91,6 +91,8 @@ schema:
           type: "string"
         - name: "department_id"
           type: "int"
+        - name: "department_name"
+          type: "string"
         - name: "title"
           type: "string"
 

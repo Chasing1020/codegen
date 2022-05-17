@@ -81,7 +81,9 @@ func Query{{.Name}}s(ctx context.Context, param *model.{{.Name}}, limit, offset 
 	var {{.LowerCamelCase}}s []*model.{{.Name}}
 
 	conn := DB.WithContext(ctx)
-	{{range .Columns}}
+	if param.ID != 0 {
+		conn = conn.Where("id = ?", param.ID)
+	}{{range .Columns}}
 	if param.{{.Name}} != {{.DefaultValue}} {
 		conn = conn.Where("{{.SnakeCase}} = ?", param.{{.Name}})
 	}{{end}}
