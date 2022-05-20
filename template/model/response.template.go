@@ -18,5 +18,6 @@ type Resp struct {
 	Code       int         `+"`"+`json:"code"`+"`"+` // Code http.status_code
 	Message    string      `+"`"+`json:"message"`+"`"+` // Error or success message
 	Data       interface{} `+"`"+`json:"data"`+"`"+` // Response data
+	Count      int64       `+"`"+`json:"count,omitempty"`+"`"+` // Total data 
 }
 `

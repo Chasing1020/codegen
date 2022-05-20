@@ -7,7 +7,7 @@ File: makefile.template.go
 package template
 
 
-var MakefileTemplate = `export GO111MODULE := on
+var MakefileTemplate = `export GO111MODULE:=on
 
 BINARY_NAME:=crud
 GO_FILES:=$(shell find . -name "*.go" -type f)

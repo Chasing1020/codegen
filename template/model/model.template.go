@@ -18,10 +18,17 @@ import "time"
 
 var StructTemplate = `
 type {{.Name}} struct {
-	ID         int `+"`"+`json:"id,omitempty" gorm:"primaryKey;autoIncrement" form:"id" swaggerignore:"true"`+"`"+` {{range .Columns}}
-	{{.Name}}  {{.Type}} `+"`"+`json:"{{.LowerCamelCase}},omitempty" form:"{{.LowerCamelCase}}"`+"`"+`{{end}}    
-	CreatedAt time.Time `+"`"+`json:"createAt,omitempty" swaggerignore:"true"`+"`"+`
-	UpdatedAt time.Time `+"`"+`json:"updateAt,omitempty" swaggerignore:"true"`+"`"+` 
+	ID int `+"`"+`json:"id,omitempty" gorm:"primaryKey;autoIncrement" form:"id" swaggerignore:"true"`+"`"+` {{range .Columns}}
+	{{.Name}} {{.Type}} `+"`"+`json:"{{.LowerCamelCase}},omitempty" form:"{{.LowerCamelCase}}"`+"`"+`{{end}}    
+	CreatedAt time.Time `+"`"+`json:"-" swaggerignore:"true"`+"`"+`
+	UpdatedAt time.Time `+"`"+`json:"-" swaggerignore:"true"`+"`"+` 
+}
+
+type {{.Name}}Param struct {
+	*{{.Name}}
+	Limit     int  `+"`"+`json:"limit" form:"limit"`+"`"+`
+	Offset    int  `+"`"+`json:"offset" form:"offset"`+"`"+`
+	NeedCount bool `+"`"+`json:"needCount" form:"needCount"`+"`"+`
 }
 
 // TableName will use the name of the table for gorm

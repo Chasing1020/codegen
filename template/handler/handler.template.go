@@ -133,18 +133,13 @@ func Get{{.Name}}Handler(c *gin.Context) {
 // @Accept       application/json
 // @Accept       application/x-www-form-urlencoded
 // @Produce      json
-// @Param        {{.LowerCamelCase}}  body    model.{{.Name}} true "{{.LowerCamelCase}}"
+// @Param        {{.LowerCamelCase}}  body    model.{{.Name}}Param true "{{.LowerCamelCase}}Param"
 // @Success      200       object  model.Resp  success
 // @Failure      400       object  model.Resp  failed
 // @Failure      404       object  model.Resp  failed
 // @Router       /{{.SnakeCase}}/query [post]
 func Query{{.Name}}Handler(c *gin.Context) {
-	var req struct {
-		*model.{{.Name}}
-		Limit     int `+"`"+`json:"limit" form:"limit"`+"`"+`
-		Offset    int `+"`"+`json:"offset" form:"offset"`+"`"+`
-		NeedCount bool `+"`"+`json:"needCount" form:"needCount"`+"`"+`
-	}
+	var req *model.{{.Name}}Param
 	err := c.ShouldBind(&req)
 	if err != nil {
 		c.JSON(400, model.Resp{Code: 400, Message: "c.ShouldBind(&{{.LowerCamelCase}}) failed: " + err.Error()})
@@ -156,7 +151,6 @@ func Query{{.Name}}Handler(c *gin.Context) {
 		c.JSON(404, model.Resp{Code: 404, Message: "not found: " + err.Error()})
 		return
 	}
-	c.JSON(200, model.Resp{Code: 200, Message: "success",
-		Data: gin.H{"{{.LowerCamelCase}}": {{.LowerCamelCase}}s, "count": count}})
+	c.JSON(200, model.Resp{Code: 200, Message: "success", Data: {{.LowerCamelCase}}s, Count: count})
 }
 `

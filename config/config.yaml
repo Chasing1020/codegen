@@ -19,6 +19,15 @@ module:
 
 schema:
   tables:
+    - name: "notice"
+      columns:
+        - name: "title"
+          type: "string"
+        - name: "name"
+          type: "string"
+        - name: "date"
+          type: "string"
+
     - name: "course"
       columns:
         - name: "name"
@@ -103,4 +112,13 @@ schema:
         - name: "username"
           type: "string"
         - name: "password"
+          type: "string"
+
+    - name: "notice"
+      columns:
+        - name: "title"
+          type: "string"
+        - name: "link"
+          type: "string"
+        - name: "date"
           type: "string"
