@@ -24,7 +24,7 @@ type {{.Name}} struct {
 	UpdatedAt time.Time `+"`"+`json:"-" swaggerignore:"true"`+"`"+` 
 }
 
-type {{.Name}}Param struct {
+type w struct {
 	*{{.Name}}
 	Limit     int  `+"`"+`json:"limit" form:"limit"`+"`"+`
 	Offset    int  `+"`"+`json:"offset" form:"offset"`+"`"+`

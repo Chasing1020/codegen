@@ -96,7 +96,7 @@ func Query{{.Name}}s(ctx context.Context, param *model.{{.Name}}, limit, offset 
 		}
 	}
 
-	if limit <= 0 && limit >= 500 {
+	if limit <= 0 || limit >= 500 {
 		limit = 100
 	}
 	session = session.Limit(limit)
