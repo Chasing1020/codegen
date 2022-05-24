@@ -55,7 +55,7 @@ func Delete{{.Name}}s(ctx context.Context, param *model.{{.Name}}) ([]*model.{{.
 
 // Update{{.Name}} will update a(n) {{.Name}} by *model.{{.Name}}.ID and set the value to *model.{{.Name}}
 func Update{{.Name}}(ctx context.Context, param *model.{{.Name}}) error {
-	err := DB.WithContext(ctx).Where("id = ?", param.ID).Updates(param).Error
+	err := DB.WithContext(ctx).Updates(param).Error
 	if err != nil {
 		log.Println("func Update{{.Name}} failed: ", err)
 		return err

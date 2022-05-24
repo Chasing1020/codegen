@@ -39,7 +39,7 @@ func Insert{{.Name}}Handler(c *gin.Context) {
 		return
 	}
 
-	err = dal.Create{{.Name}}(c, &{{.LowerCamelCase}})
+	err = dal.Create{{.Name}}(c.Request.Context(), &{{.LowerCamelCase}})
 	if err != nil {
 		c.JSON(400, model.Resp{Code: 400, Message: "del.Create{{.Name}} failed: " + err.Error()})
 		return
@@ -66,10 +66,10 @@ func Delete{{.Name}}Handler(c *gin.Context) {
 		return
 	}
 
-	{{.LowerCamelCase}}s, err := dal.Delete{{.Name}}s(c, {{.LowerCamelCase}})
+	{{.LowerCamelCase}}s, err := dal.Delete{{.Name}}s(c.Request.Context(), {{.LowerCamelCase}})
 
 	if err != nil {
-		c.JSON(400, model.Resp{Code: 400, Message: "func dal.Delete{{.Name}}s(c, ids) failed: " + err.Error()})
+		c.JSON(400, model.Resp{Code: 400, Message: "func dal.Delete{{.Name}}s(c.Request.Context(), ids) failed: " + err.Error()})
 		return
 	}
 	c.JSON(200, model.Resp{Code: 200, Message: "success", Data: {{.LowerCamelCase}}s})
@@ -93,9 +93,9 @@ func Update{{.Name}}Handler(c *gin.Context) {
 		return
 	}
 
-	err = dal.Update{{.Name}}(c, {{.LowerCamelCase}})
+	err = dal.Update{{.Name}}(c.Request.Context(), {{.LowerCamelCase}})
 	if err != nil {
-		c.JSON(400, model.Resp{Code: 400, Message: "dal.Update{{.Name}}(c, {{.LowerCamelCase}}) failed:" + err.Error()})
+		c.JSON(400, model.Resp{Code: 400, Message: "dal.Update{{.Name}}(c.Request.Context(), {{.LowerCamelCase}}) failed:" + err.Error()})
 		return
 	}
 	c.JSON(200, model.Resp{Code: 200, Message: "success", Data: {{.LowerCamelCase}}})
@@ -119,7 +119,7 @@ func Get{{.Name}}Handler(c *gin.Context) {
 		return
 	}
 
-	{{.LowerCamelCase}}s, err := dal.Get{{.Name}}ById(c, id)
+	{{.LowerCamelCase}}s, err := dal.Get{{.Name}}ById(c.Request.Context(), id)
 	if err != nil {
 		c.JSON(404, model.Resp{Code: 404, Message: "not found: " + err.Error()})
 		return
@@ -146,7 +146,7 @@ func Query{{.Name}}Handler(c *gin.Context) {
 		return
 	}
 
-	{{.LowerCamelCase}}s, count, err := dal.Query{{.Name}}s(c, req.{{.Name}}, req.Limit, req.Offset, req.NeedCount)
+	{{.LowerCamelCase}}s, count, err := dal.Query{{.Name}}s(c.Request.Context(), req.{{.Name}}, req.Limit, req.Offset, req.NeedCount)
 	if err != nil {
 		c.JSON(404, model.Resp{Code: 404, Message: "not found: " + err.Error()})
 		return
