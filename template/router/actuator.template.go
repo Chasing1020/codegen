@@ -24,8 +24,8 @@ import (
 // @Summary      Check http response health
 // @Description  Check http response health:
 // @Description  curl --location --request 'localhost:8080/actuator/health'
-// @Success      200  object  string  success
-// @Failure      400  object  string  failed
+// @Success      200       {object}  model.Resp  "success"
+// @Failure      400       {object}  model.Resp  "failed"
 // @Router       /actuator/health [get]
 func HealthHandler(c *gin.Context) {
 	c.JSON(200, gin.H{"status": "UP"})
@@ -35,8 +35,8 @@ func HealthHandler(c *gin.Context) {
 // @Summary      Check redis health
 // @Description  Check redis health:
 // @Description  curl --location --request 'localhost:8080/actuator/health/redis'
-// @Success      200  object  string  success
-// @Failure      400  object  string  failed
+// @Success      200       {object}  model.Resp  "success"
+// @Failure      400       {object}  model.Resp  "failed"
 // @Router       /actuator/health/redis [get]
 func RedisHealthHandler(c *gin.Context) {
 	if dal.RDB.Ping(c).Val() == "" {
@@ -49,8 +49,8 @@ func RedisHealthHandler(c *gin.Context) {
 // @Summary      Check mysql health
 // @Description  Check mysql health:
 // @Description  curl --location --request 'localhost:8080/actuator/health/mysql'
-// @Success      200  object  string  success
-// @Failure      400  object  string  failed
+// @Success      200       {object}  model.Resp  "success"
+// @Failure      400       {object}  model.Resp  "failed"
 // @Router       /actuator/health/mysql [get]
 func MySQLHealthHandler(c *gin.Context) {
 	var result int
@@ -67,8 +67,8 @@ func MySQLHealthHandler(c *gin.Context) {
 // @Summary      Check session health
 // @Description  Check session health:
 // @Description  curl --location --request 'localhost:8080/actuator/health/session'
-// @Success      200  object  string  success
-// @Failure      400  object  string  failed
+// @Success      200       {object}  model.Resp  "success"
+// @Failure      400       {object}  model.Resp  "failed"
 // @Router       /actuator/health/session [get]
 func SessionHealthHandler(c *gin.Context) {
 	session := sessions.Default(c)

@@ -58,9 +58,9 @@ func CookieRequired(c *gin.Context) {
 // @Produce      json
 // @Param        username  body    string      false  "username"  default(0)
 // @Param        password  query   string      false  "password"  default(0)
-// @Success      200       object  model.Resp  success
-// @Failure      401       object  model.Resp  failed
-// @Failure      500       object  model.Resp  failed
+// @Success      200       {object}  model.Resp  "success"
+// @Failure      401       {object}  model.Resp  "failed"
+// @Failure      500       {object}  model.Resp  "failed"
 // @Router       /login [post]
 func Login(c *gin.Context) {
 	session := sessions.Default(c)
@@ -92,9 +92,9 @@ func Login(c *gin.Context) {
 // @Summary      Logout
 // @Description  Logout and delete the session
 // @Produce      json
-// @Success      200  object  model.Resp  success
-// @Failure      401  object  model.Resp  failed
-// @Failure      500  object  model.Resp  failed
+// @Success      200       {object}  model.Resp  "success"
+// @Failure      401       {object}  model.Resp  "failed"
+// @Failure      500       {object}  model.Resp  "failed"
 // @Router       /logout [get]
 func Logout(c *gin.Context) {
 	session := sessions.Default(c)
