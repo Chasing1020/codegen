@@ -114,11 +114,11 @@ schema:
         - name: "password"
           type: "string"
 
-    - name: "notice"
-      columns:
-        - name: "title"
-          type: "string"
-        - name: "link"
-          type: "string"
-        - name: "date"
-          type: "string"
+    # - name: "notice"
+    #   columns:
+    #     - name: "title"
+    #       type: "string"
+    #     - name: "link"
+    #       type: "string"
+    #     - name: "date"
+    #       type: "string"

@@ -28,8 +28,8 @@ var MethodsTemplate = `
 // @Accept       application/x-www-form-urlencoded
 // @Produce      json
 // @Param        {{.Name}}  body    model.{{.Name}} true "{{.Name}}"
-// @Success      200       object  model.Resp  success
-// @Failure      400       object  model.Resp  failed
+// @Success      200       {object}  model.Resp  "success"
+// @Failure      400       {object}  model.Resp  "failed"
 // @Router       /{{.SnakeCase}}/insert [post]
 func Insert{{.Name}}Handler(c *gin.Context) {
 	var {{.LowerCamelCase}} model.{{.Name}}
@@ -54,9 +54,8 @@ func Insert{{.Name}}Handler(c *gin.Context) {
 // @Accept       application/x-www-form-urlencoded
 // @Produce      json
 // @Param        {{.Name}}  body    model.{{.Name}} true "{{.Name}}"
-// @Success      200       object  model.Resp  success
-// @Success      200 object model.Resp success
-// @Failure      400 object model.Resp failed
+// @Success      200       {object}  model.Resp  "success"
+// @Failure      400       {object}  model.Resp  "failed"
 // @Router       /{{.SnakeCase}}/delete [post]
 func Delete{{.Name}}Handler(c *gin.Context) {
 	var {{.LowerCamelCase}} *model.{{.Name}}
@@ -82,8 +81,8 @@ func Delete{{.Name}}Handler(c *gin.Context) {
 // @Accept       application/x-www-form-urlencoded
 // @Produce      json
 // @Param        {{.LowerCamelCase}}  body    model.{{.Name}} true "{{.LowerCamelCase}}"
-// @Success      200       object  model.Resp  success
-// @Failure      400       object  model.Resp  failed
+// @Success      200       {object}  model.Resp  "success"
+// @Failure      400       {object}  model.Resp  "failed"
 // @Router       /{{.SnakeCase}}/update [post]
 func Update{{.Name}}Handler(c *gin.Context) {
 	var {{.LowerCamelCase}} *model.{{.Name}}
@@ -108,9 +107,9 @@ func Update{{.Name}}Handler(c *gin.Context) {
 // @Accept       application/x-www-form-urlencoded
 // @Produce      json
 // @Param        id        query   int         true   "id"
-// @Success      200       object  model.Resp  success
-// @Failure      400       object  model.Resp  failed
-// @Failure      404       object  model.Resp  failed
+// @Success      200       {object}  model.Resp  "success"
+// @Failure      400       {object}  model.Resp  "failed"
+// @Failure      404       {object}  model.Resp  "failed"
 // @Router       /{{.SnakeCase}}/get [get]
 func Get{{.Name}}Handler(c *gin.Context) {
 	id, ok := c.GetQuery("id")
@@ -134,9 +133,9 @@ func Get{{.Name}}Handler(c *gin.Context) {
 // @Accept       application/x-www-form-urlencoded
 // @Produce      json
 // @Param        {{.LowerCamelCase}}  body    model.{{.Name}}Param true "{{.LowerCamelCase}}Param"
-// @Success      200       object  model.Resp  success
-// @Failure      400       object  model.Resp  failed
-// @Failure      404       object  model.Resp  failed
+// @Success      200       {object}  model.Resp  "success"
+// @Failure      400       {object}  model.Resp  "failed"
+// @Failure      404       {object}  model.Resp  "failed"
 // @Router       /{{.SnakeCase}}/query [post]
 func Query{{.Name}}Handler(c *gin.Context) {
 	var req *model.{{.Name}}Param
